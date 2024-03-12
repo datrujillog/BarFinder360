@@ -29,8 +29,6 @@ model User {
   mesas     UserMesa[]   // Relación muchos a muchos con Mesa
 }
 
-
-
 //modelo de turno
 model Turno {
   id            Int       @id @default(autoincrement())
@@ -68,8 +66,6 @@ model Mesa {
   users    UserMesa[]    // Relación muchos a muchos con User
   productos MesaProducto[]  // Relación muchos a muchos con Producto
 }
-
-
 
 model UserMesa {  //tabla intermedia para la relación muchos a muchos entre User y Mesa
   id       Int      @id @default(autoincrement())
@@ -110,9 +106,6 @@ model MesaProducto {
 
   @@unique([productoId, mesaId]) // Asegurar unicidad en la relación
 }
-
-
-
 model PedidoProducto {// Tabla intermedia para la relación muchos a muchos entre Producto y Pedido
   id         Int      @id @default(autoincrement())
   producto   Producto @relation(fields: [productoId], references: [id])
@@ -123,9 +116,7 @@ model PedidoProducto {// Tabla intermedia para la relación muchos a muchos entr
   @@unique([productoId, pedidoId]) // Asegurar unicidad en la relación
 }
 
-
-
-
+//modelo de promocion
 model Promocion {
   id       Int      @id @default(autoincrement())
   descripcion   String
@@ -136,8 +127,7 @@ model Promocion {
   productos   Producto[]  // Relación uno a muchos con Producto
 }
 
-
-
+//modelo de categoria
 model Category {
   id       Int      @id @default(autoincrement())
   nombre   String
