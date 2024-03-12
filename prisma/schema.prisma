@@ -24,8 +24,8 @@ model User {
   password  String
   telefono  String
   rol       String
-  turno     Turno?   // Relación uno a uno con Turno
   estado    String
+  turno     Turno?   // Relación uno a uno con Turno
   mesas     UserMesa[]   // Relación muchos a muchos con Mesa
 }
 
@@ -107,6 +107,8 @@ model MesaProducto {
   productoId Int
   mesa       Mesa     @relation(fields: [mesaId], references: [id])
   mesaId     Int
+
+  @@unique([productoId, mesaId]) // Asegurar unicidad en la relación
 }
 
 
@@ -117,6 +119,8 @@ model PedidoProducto {// Tabla intermedia para la relación muchos a muchos entr
   productoId Int
   pedido     Pedido   @relation(fields: [pedidoId], references: [id])
   pedidoId   Int
+
+  @@unique([productoId, pedidoId]) // Asegurar unicidad en la relación
 }
 
 
