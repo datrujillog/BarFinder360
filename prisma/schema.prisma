@@ -25,12 +25,12 @@ model User {
   telefono  String
   rol       String
   estado    String
-  turno     Turno?   // Relación uno a uno con Turno
+  shift     Shift?   // Relación uno a uno con Turno
   mesas     UserMesa[]   // Relación muchos a muchos con Mesa
 }
 
 //modelo de turno
-model Turno {
+model Shift {
   id            Int       @id @default(autoincrement())
   marcarTiempo  DateTime
   abrir         DateTime
