@@ -1,0 +1,144 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+
+//modelo de usuario
+model User {
+  id        Int      @id @default(autoincrement())
+  nombre    String
+  apellido  String
+  usuario   String
+  email     String
+  password  String
+  telefono  String
+  rol       String
+  turno     Turno?   // Relación uno a uno con Turno
+  estado    String
+  mesas     UserMesa[]   // Relación muchos a muchos con Mesa
+}
+
+
+
+//modelo de turno
+model Turno {
+  id            Int       @id @default(autoincrement())
+  marcarTiempo  DateTime
+  abrir         DateTime
+  cerrar        DateTime
+  user          User? @relation(fields: [userId], references: [id])  // Relación uno a uno con User
+  userId        Int?    @unique // Campo único para la relación uno a uno con User
+}
+
+//modelo de pedido
+
+model Pedido {
+  id          Int               @id @default(autoincrement())
+  fecha       DateTime
+  cantidad    Int
+  total       Float
+  estado      String
+  productos   PedidoProducto[]  // Relación muchos a muchos con Producto
+  mesa        Mesa @relation(fields: [mesaId], references: [id])  // Relación uno a uno con Mesa
+  mesaId      Int @unique  // Campo único para la relación uno a uno con Mesa
+ 
+}
+
+model Mesa {
+  id       Int      @id @default(autoincrement())
+  fecha    DateTime
+  unidad   Int
+  producto String
+  precio   Float
+  promo    String
+  total    Float
+  estado   String
+  pedido   Pedido?   // Relación uno a uno con Pedido
+  users    UserMesa[]    // Relación muchos a muchos con User
+  productos MesaProducto[]  // Relación muchos a muchos con Producto
+}
+
+
+
+model UserMesa {  //tabla intermedia para la relación muchos a muchos entre User y Mesa
+  id       Int      @id @default(autoincrement())
+  users     User     @relation(fields: [userId], references: [id])
+  userId   Int
+  mesas     Mesa     @relation(fields: [mesaId], references: [id])
+  mesaId   Int
+  
+  @@unique([userId, mesaId]) // Asegurar unicidad en la relación
+}
+
+model Producto {
+  id                Int       @id @default(autoincrement())
+  name              String
+  codigo            String
+  precio            Float
+  tiempoPreparacion String
+  categoria         String
+  descripcion       String
+  imagen            String
+  promocion         String
+  estado            String
+  pedidos           PedidoProducto[] // Relación muchos a muchos con Pedido
+  mesas             MesaProducto[]   // Relación muchos a muchos con Mesa
+  promociones       Promocion @relation(fields: [promocionId], references: [id])  // Relación uno a muchos con Promocion
+  promocionId       Int
+  categorias        Category @relation(fields: [categoriaId], references: [id])  // Relación uno a muchos con Category
+  categoriaId       Int
+}
+
+//tabla intermedia de muchos de productos y mesas 
+model MesaProducto {
+  id         Int      @id @default(autoincrement())
+  producto   Producto @relation(fields: [productoId], references: [id])
+  productoId Int
+  mesa       Mesa     @relation(fields: [mesaId], references: [id])
+  mesaId     Int
+}
+
+
+
+model PedidoProducto {// Tabla intermedia para la relación muchos a muchos entre Producto y Pedido
+  id         Int      @id @default(autoincrement())
+  producto   Producto @relation(fields: [productoId], references: [id])
+  productoId Int
+  pedido     Pedido   @relation(fields: [pedidoId], references: [id])
+  pedidoId   Int
+}
+
+
+
+
+model Promocion {
+  id       Int      @id @default(autoincrement())
+  descripcion   String
+  tipo   String
+  fechaInicio   DateTime
+  fechaFin   DateTime
+  estado   String
+  productos   Producto[]  // Relación uno a muchos con Producto
+}
+
+
+
+model Category {
+  id       Int      @id @default(autoincrement())
+  nombre   String
+  descripcion   String
+  estado   String
+  productos   Producto[]  // Relación uno a muchos con Producto
+
+}
