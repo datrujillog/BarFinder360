@@ -14,27 +14,33 @@ class AuthService {
   async login(data) {
     try {
       const { email, password } = data;
+      const results = await this.userService.getByEmail(email);
 
-      const user = await this.userService.getByEmail(data.email);
-
-      await this.#compare(password, user.password);
-
-
-      return user;
+      if (!results.success) {
+        throw results.error;
+      }
+      await this.#compare(password, results.results.password);
+      const token = await this.crearToken(results);
+      const user = results.results;
+      return { success: true, user, token };
     } catch (error) {
-      throw error;
+      return { success: false, error };
     }
   }
 
   async signup(data) {
-    if (data.password) {
-      data.password = await this.#encrypt(data.password);
+    try {
+      if (data.password) {
+        data.password = await this.#encrypt(data.password);
+      }
+      const user = await this.prisma.user.create({ data });
+      return { success: true, user };
+    } catch (error) {
+      return { success: false, error };
     }
-    const user = await this.prisma.user.create({ data });
-    return user;
   }
 
-  async crearToken(data) {
+  async crearToken(payload) {
     const token = jwt.sign(payload, config.jwtSecret, {
       expiresIn: "7d",
     });
@@ -51,7 +57,7 @@ class AuthService {
       console.log(error);
     }
   }
-  
+
   async #compare(string, hash) {
     const match = await bcrypt.compare(string, hash);
     if (!match) {
