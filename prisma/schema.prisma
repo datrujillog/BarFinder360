@@ -41,13 +41,13 @@ model Shift {
 
 //modelo de pedido
 
-model Pedido {
+model Order {
   id          Int               @id @default(autoincrement())
   fecha       DateTime
   cantidad    Int
   total       Float
   estado      String
-  productos   PedidoProducto[]  // Relación muchos a muchos con Producto
+  productos   OrderProduct[]  // Relación muchos a muchos con Producto
   mesa        Mesa @relation(fields: [mesaId], references: [id])  // Relación uno a uno con Mesa
   mesaId      Int @unique  // Campo único para la relación uno a uno con Mesa
  
@@ -62,9 +62,9 @@ model Mesa {
   promo    String
   total    Float
   estado   String
-  pedido   Pedido?   // Relación uno a uno con Pedido
+  order   Order?   // Relación uno a uno con Pedido
   users    UserMesa[]    // Relación muchos a muchos con User
-  productos MesaProducto[]  // Relación muchos a muchos con Producto
+  productos MesaProduct[]  // Relación muchos a muchos con Producto
 }
 
 model UserMesa {  //tabla intermedia para la relación muchos a muchos entre User y Mesa
@@ -77,7 +77,7 @@ model UserMesa {  //tabla intermedia para la relación muchos a muchos entre Use
   @@unique([userId, mesaId]) // Asegurar unicidad en la relación
 }
 
-model Producto {
+model Product {
   id                Int       @id @default(autoincrement())
   name              String
   codigo            String
@@ -88,43 +88,43 @@ model Producto {
   imagen            String
   promocion         String
   estado            String
-  pedidos           PedidoProducto[] // Relación muchos a muchos con Pedido
-  mesas             MesaProducto[]   // Relación muchos a muchos con Mesa
-  promociones       Promocion @relation(fields: [promocionId], references: [id])  // Relación uno a muchos con Promocion
+  order             OrderProduct[] // Relación muchos a muchos con Pedido
+  mesas             MesaProduct[]   // Relación muchos a muchos con Mesa
+  promotion       Promotion @relation(fields: [promocionId], references: [id])  // Relación uno a muchos con Promocion
   promocionId       Int
   categorias        Category @relation(fields: [categoriaId], references: [id])  // Relación uno a muchos con Category
   categoriaId       Int
 }
 
 //tabla intermedia de muchos de productos y mesas 
-model MesaProducto {
+model MesaProduct {
   id         Int      @id @default(autoincrement())
-  producto   Producto @relation(fields: [productoId], references: [id])
-  productoId Int
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
   mesa       Mesa     @relation(fields: [mesaId], references: [id])
   mesaId     Int
 
-  @@unique([productoId, mesaId]) // Asegurar unicidad en la relación
+  @@unique([productId, mesaId]) // Asegurar unicidad en la relación
 }
-model PedidoProducto {// Tabla intermedia para la relación muchos a muchos entre Producto y Pedido
+model OrderProduct {// Tabla intermedia para la relación muchos a muchos entre Producto y Pedido
   id         Int      @id @default(autoincrement())
-  producto   Producto @relation(fields: [productoId], references: [id])
-  productoId Int
-  pedido     Pedido   @relation(fields: [pedidoId], references: [id])
-  pedidoId   Int
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+  order     Order   @relation(fields: [orderId], references: [id])
+  orderId   Int
 
-  @@unique([productoId, pedidoId]) // Asegurar unicidad en la relación
+  @@unique([productId, orderId]) // Asegurar unicidad en la relación
 }
 
 //modelo de promocion
-model Promocion {
+model Promotion {
   id       Int      @id @default(autoincrement())
   descripcion   String
   tipo   String
   fechaInicio   DateTime
   fechaFin   DateTime
   estado   String
-  productos   Producto[]  // Relación uno a muchos con Producto
+  product   Product[]  // Relación uno a muchos con Producto
 }
 
 //modelo de categoria
@@ -133,6 +133,6 @@ model Category {
   nombre   String
   descripcion   String
   estado   String
-  productos   Producto[]  // Relación uno a muchos con Producto
+  product   Product[]  // Relación uno a muchos con Producto
 
 }
