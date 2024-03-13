@@ -9,6 +9,20 @@ function authRouter(app) {
 
   app.use("/api/auth", router);
 
+  router.post("/login", async (req, res, next) => {
+    try {
+      const body = req.body;
+      const users = await authServi.login(body);
+      console.log(users);
+      res.status(201).json({
+        message: "login successful",
+        users,
+      });
+    } catch (error) {
+      next(error);
+    }
+  });
+
   router.post("/signup", async (req, res, next) => {
     try {
       const body = req.body;
