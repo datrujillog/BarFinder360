@@ -41,6 +41,9 @@ class UserService {
           email: email,
         },
       });
+      if (!results) {
+        throw new Error("User not found");
+      }
       return results;
     } catch (error) {
       throw error;
