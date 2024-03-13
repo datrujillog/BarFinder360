@@ -1,12 +1,31 @@
 import { PrismaClient } from "@prisma/client";
+import UserService from "./userService.js";
 
 
 
 class AuthService {
   constructor() {
     this.prisma = new PrismaClient();
+    this.userService = new UserService();
 
     
+  }
+
+  async login (data) {
+    try {
+
+      const user = await this.userService.getByEmail(data.email);
+      if (!user) {
+        throw new Error("User not found");
+      }
+      if (user.password !== data.password) {
+        throw new Error("Invalid password");
+      }
+      return user;
+      
+    } catch (error) {
+      throw error;
+    }
   }
 
   async signup (data) {
