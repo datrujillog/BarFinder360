@@ -4,6 +4,7 @@ import morgan from "morgan";
 //importar las rutas 
 import Auth from "./routes/authRouter.js";
 import User from "./routes/userRouter.js";
+import e from "express";
 
 
 const port = 5001;
@@ -19,6 +20,16 @@ app.use(express.urlencoded({ extended: true }));
 Auth(app);
 User(app);
 
+//middleware de errores
+app.use((error, req, res, next) => {
+  console.error(error.message);
+ res.status(500).json({ message:  error.message || error });
+
+});
+
+
+
+//levantar el servidor
 
 
 
