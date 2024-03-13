@@ -16,42 +16,43 @@ datasource db {
 
 //modelo de usuario
 model User {
-  id        Int      @id @default(autoincrement())
-  nombre    String
-  apellido  String
-  usuario   String
-  email     String
-  password  String
-  telefono  String
-  NombreNegocio String
-  tipoNegocio String
-  rol       String
-  estado    String
-  shift     Shift?   // Relación uno a uno con Turno
-  mesas     UserMesa[]   // Relación muchos a muchos con Mesa
+  id              Int      @id @default(autoincrement())
+  name            String
+  lasName         String
+  usuario         String
+  email           String
+  password        String
+  phone           String
+  NameBusiness    String
+  tipoNegocio     String
+  rol             Role       @default(VENDEDOR)
+  state           EstadoUser @default(PENDIENTE)
+  shift           Shift?   // Relación uno a uno con Turno
+  mesas           UserMesa[]   // Relación muchos a muchos con Mesa
 }
 
 //modelo de turno
 model Shift {
-  id            Int       @id @default(autoincrement())
-  marcarTiempo  DateTime
-  abrir         DateTime
-  cerrar        DateTime
-  user          User? @relation(fields: [userId], references: [id])  // Relación uno a uno con User
-  userId        Int?    @unique // Campo único para la relación uno a uno con User
+  id              Int       @id @default(autoincrement())
+  markTime        DateTime
+  open            DateTime
+  close           DateTime
+  state           stateShift 
+  user            User? @relation(fields: [userId], references: [id])  // Relación uno a uno con User
+  userId          Int?    @unique // Campo único para la relación uno a uno con User
 }
 
 //modelo de pedido
 
 model Order {
-  id          Int               @id @default(autoincrement())
-  fecha       DateTime
-  cantidad    Int
-  total       Float
-  estado      String
-  productos   OrderProduct[]  // Relación muchos a muchos con Producto
-  mesa        Mesa @relation(fields: [mesaId], references: [id])  // Relación uno a uno con Mesa
-  mesaId      Int @unique  // Campo único para la relación uno a uno con Mesa
+  id              Int               @id @default(autoincrement())
+  date            DateTime
+  amount          Int
+  total           Float
+  state           stateOrder
+  product         OrderProduct[]  // Relación muchos a muchos con Producto
+  mesa            Mesa @relation(fields: [mesaId], references: [id])  // Relación uno a uno con Mesa
+  mesaId          Int @unique  // Campo único para la relación uno a uno con Mesa
  
 }
 
@@ -136,5 +137,42 @@ model Category {
   descripcion   String
   estado   String
   product   Product[]  // Relación uno a muchos con Producto
+
+}
+
+
+
+//enum  para los roles de usuario
+enum Role {
+  VENDEDOR
+  CAJA
+  COODINADOR
+  ADMIN
+}
+
+//enum para los estados de usuario
+enum EstadoUser {
+  ACTIVO
+  INACTIVO
+  PENDIENTE
+}
+
+//enum para los estados de turno
+enum stateShift {
+  ACTIVO
+  INACTIVO
+  PENDIENTE
+}
+
+
+enum stateOrder {
+  PENDIENTE           //La orden de pago ha sido creada pero aún no se ha procesado.
+  COMPLETADA          //La orden de pago se ha procesado correctamente y se ha completado.
+  CANCELADO           //La orden de pago ha sido cancelada.
+  REEMBOLSADO         //La orden de pago ha sido reembolsada.
+  EN_PROCESO          //La orden de pago ha sido procesada y se encuentra en proceso de entrega.
+  DISPUTADO           //La orden de pago está siendo disputada debido a algún problema o reclamación.
+  FALLIDA             //a orden de pago no se pudo procesar correctamente y ha fallado.
+  PAGADO             //La orden de pago ha sido pagada.
 
 }
