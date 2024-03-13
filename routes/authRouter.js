@@ -1,5 +1,10 @@
-import express from "express";
+import express, { response } from "express";
 import AuthService from "../services/authService.js";
+import {
+  errorResponse,
+  authResponse,
+  Responsee,
+} from "../helpers/response.js";
 
 function authRouter(app) {
   const router = express.Router();
@@ -10,31 +15,26 @@ function authRouter(app) {
   app.use("/api/auth", router);
 
   router.post("/login", async (req, res, next) => {
-    try {
-      const body = req.body;
-      const users = await authServi.login(body);
-      console.log(users);
-      res.status(201).json({
-        message: "login successful",
-        users,
-      });
-    } catch (error) {
-      next(error);
-    }
+    const body = req.body;
+    const response = await authServi.login(body);
+
+    response.success
+      ? authResponse(res, 201, true, "login successful", {
+          payload: response.user,
+          token: response.token,
+        })
+      : errorResponse(res, response.error);
   });
 
   router.post("/signup", async (req, res, next) => {
-    try {
-      const body = req.body;
-      const users = await authServi.signup(body);
-      console.log(users);
-      res.status(201).json({
-        message: "User created",
-        users,
-      });
-    } catch (error) {
-      next(error);
-    }
+    const body = req.body;
+    const response = await authServi.signup(body);
+    response.success
+      ? Responsee(res, 201, true, "signup successful", {
+          payload: response.user,
+          token: response.token,
+        })
+      : errorResponse(res, response.error);
   });
 
   return router;
