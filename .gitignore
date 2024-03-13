@@ -125,3 +125,6 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+prisma/migrations/20240313000106_initial/migration.sql
+db/bar_db.mwb
+prisma/migrations/migration_lock.toml
