@@ -23,6 +23,8 @@ model User {
   email     String
   password  String
   telefono  String
+  NombreNegocio String
+  tipoNegocio String
   rol       String
   estado    String
   shift     Shift?   // Relación uno a uno con Turno
