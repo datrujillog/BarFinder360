@@ -13,11 +13,8 @@ class AuthService {
 
   async login (data) {
     try {
-
       const user = await this.userService.getByEmail(data.email);
-      if (!user) {
-        throw new Error("User not found");
-      }
+    
       if (user.password !== data.password) {
         throw new Error("Invalid password");
       }
