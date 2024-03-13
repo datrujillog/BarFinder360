@@ -30,7 +30,21 @@ function userRouter(app) {
     }
   });
 
+  router.get("/:id", async (req, res, next) => {
+    try {
+      const userId = req.params.id;
+      const users = await userServi.getUserById(userId);
+      res.status(201).json({
+        message: "User created",
+        users,
+      });
+    } catch (error) {
+      next(error);
+    }
+  });
+
   return router;
 }
+
 
 export default userRouter;
