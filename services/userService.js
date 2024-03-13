@@ -11,42 +11,41 @@ class UserService {
       const count = await this.prisma.user.count();
 
       console.log(results);
-      return {
-        count,
-        results,
-      };
+      return { success: true, count, results };
     } catch (error) {
-      throw error;
+      return { success: false, error };
     }
   }
 
   async getUserById(id) {
     try {
-      // validar que el usuario exia en la base de datos
       const results = await this.prisma.user.findUnique({
         where: {
           id: parseInt(id),
         },
       });
-      return results;
+      return { success: true, results };
     } catch (error) {
-      throw error;
+      return { success: false, error };
     }
   }
 
   async getByEmail(email) {
     try {
-      const results = await this.prisma.user.findFirst({   //busca el primer usuario que cumpla con la condicion de email
+      const results = await this.prisma.user.findFirst({
+        //busca el primer usuario que cumpla con la condicion de email
         where: {
           email: email,
         },
       });
       if (!results) {
-        throw new Error("User not found");
+        const err = new Error("User not found");
+        err.code = 404;
+        throw err;
       }
-      return results;
+      return { success: true, results };
     } catch (error) {
-      throw error;
+      return { success: false, error };
     }
   }
 }
