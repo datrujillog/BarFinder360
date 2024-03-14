@@ -2,7 +2,7 @@ import express, { response } from "express";
 import AuthService from "../services/authService.js";
 import { errorResponse, authResponse, Responsee } from "../helpers/response.js";
 import { asyncHandler } from "../helpers/utils.js";
-import { checkPermission } from "../middleware/checkPermission.js";
+// import { checkPermission } from "../middleware/checkPermission.js";
 
 function authRouter(app) {
   const router = express.Router();
