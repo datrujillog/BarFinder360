@@ -41,7 +41,7 @@ function userRouter(app) {
     const userId = req.params.id;
     const body = req.body;
     const token = req.headers.authorization.split(" ")[1];
-    const response = await userServi.updateUser(userId, body);
+    const response = await userServi.updateUser(userId, body, token);
     response.success
       ? authResponse(res, 201, true, "User updated", {
           payload: response,
@@ -53,7 +53,7 @@ function userRouter(app) {
   router.delete("/:id", authValidation, async (req, res, next) => {
     const userId = req.params.id;
     const token = req.headers.authorization.split(" ")[1];
-    const response = await userServi.deleteUser(userId);
+    const response = await userServi.deleteUser(userId,token);
     response.success
       ? authResponse(res, 201, true, "User deleted", {
           payload: response,
