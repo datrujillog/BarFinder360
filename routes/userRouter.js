@@ -1,19 +1,17 @@
-import express from "express";
+import express, { response } from "express";
 import UserService from "../services/userService.js";
 import authValidation from "../middleware/authValidation.js";
-
-
+import { authResponse, errorResponse } from "../helpers/response.js";
 
 function userRouter(app) {
   const router = express.Router();
 
   const userServi = new UserService();
 
-//   instanciar el servicio
+  //   instanciar el servicio
   app.use("/api/users", router);
 
-
-  router.get("/", authValidation,async (req, res, next) => {
+  router.get("/", authValidation, async (req, res, next) => {
     try {
       const body = req.body;
       const users = await userServi.getAllUsers(body);
@@ -39,8 +37,32 @@ function userRouter(app) {
     }
   });
 
+  router.put("/:id", authValidation, async (req, res, next) => {
+    const userId = req.params.id;
+    const body = req.body;
+    const token = req.headers.authorization.split(" ")[1];
+    const response = await userServi.updateUser(userId, body);
+    response.success
+      ? authResponse(res, 201, true, "User updated", {
+          payload: response,
+          token: token,
+        })
+      : errorResponse(res, response.error);
+  });
+
+  router.delete("/:id", authValidation, async (req, res, next) => {
+    const userId = req.params.id;
+    const token = req.headers.authorization.split(" ")[1];
+    const response = await userServi.deleteUser(userId);
+    response.success
+      ? authResponse(res, 201, true, "User deleted", {
+          payload: response,
+          token: token,
+        })
+      : errorResponse(res, response.error);
+  });
+
   return router;
 }
-
 
 export default userRouter;
