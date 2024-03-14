@@ -1,10 +1,11 @@
 import express from "express";
 import morgan from "morgan";
+import config from "./config/config.js";
+
 
 //importar las rutas 
 import Auth from "./routes/authRouter.js";
 import User from "./routes/userRouter.js";
-import e from "express";
 
 
 const port = 5001;
@@ -34,6 +35,7 @@ app.use((error, req, res, next) => {
 
 
 
-app.listen(port, () => {
-  console.log("Server is running on port 3000");
+app.listen(config.port, () => {
+  console.log("Server is running on port " + config.port);
+  console.log("http://localhost:" + config.port + "/api/");
 });
