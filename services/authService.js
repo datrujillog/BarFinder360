@@ -42,7 +42,9 @@ class AuthService {
 
   async crearToken(payload) {
     const token = jwt.sign(payload, config.jwtSecret, {
-      expiresIn: "7d",
+      //que el token se vensa en un minuto // 1m
+      // expiresIn: "1m",
+      expiresIn: "1d",
     });
     return token;
   }
