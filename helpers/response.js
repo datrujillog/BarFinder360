@@ -25,16 +25,10 @@ const errorResponse = (res = response, error) => {
       errors: [{ message: error.message || error.errors }],
     });
   }
-    return res.status(500).json({
-      ok: false,
-      errors: [{ message: error.message || error }],
-    });
-
-    // return res.status(P2025).json({
-    //   ok: false,
-    //   errors: [{ message: error.message || error }],
-    // });
-    
+  return res.status(500).json({
+    ok: false,
+    errors: [{ message: error.message || error }],
+  });
 };
 
 const authResponse = async (res = response, status, ok, message, data) => {
