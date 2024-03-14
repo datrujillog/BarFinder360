@@ -25,21 +25,21 @@ model User {
   phone           String
   NameBusiness    String
   tipoNegocio     String
-  rol             Role       @default(VENDEDOR)
-  state           EstadoUser @default(PENDIENTE)
+  rol             Role               @default(ADMIN)
+  state           EstadoUser         @default(ACTIVO)
   shift           Shift?   // Relación uno a uno con Turno
   mesas           UserMesa[]   // Relación muchos a muchos con Mesa
 }
 
 //modelo de turno
 model Shift {
-  id              Int       @id @default(autoincrement())
+  id              Int                  @id @default(autoincrement())
   markTime        DateTime
   open            DateTime
   close           DateTime
-  state           stateShift 
-  user            User? @relation(fields: [userId], references: [id])  // Relación uno a uno con User
-  userId          Int?    @unique // Campo único para la relación uno a uno con User
+  state           stateShift
+  user            User?               @relation(fields: [userId], references: [id])  // Relación uno a uno con User
+  userId          Int?                @unique // Campo único para la relación uno a uno con User
 }
 
 //modelo de pedido
@@ -57,17 +57,14 @@ model Order {
 }
 
 model Mesa {
-  id       Int      @id @default(autoincrement())
-  fecha    DateTime
-  unidad   Int
-  producto String
-  precio   Float
-  promo    String
-  total    Float
-  estado   String
-  order   Order?   // Relación uno a uno con Pedido
-  users    UserMesa[]    // Relación muchos a muchos con User
-  productos MesaProduct[]  // Relación muchos a muchos con Producto
+  id              Int      @id @default(autoincrement())
+  date            DateTime
+  name            String
+  description     String
+  state           stateMesa
+  order           Order?   // Relación uno a uno con Pedido
+  users           UserMesa[]    // Relación muchos a muchos con User
+  products        MesaProduct[]  // Relación muchos a muchos con Producto
 }
 
 model UserMesa {  //tabla intermedia para la relación muchos a muchos entre User y Mesa
@@ -84,36 +81,36 @@ model Product {
   id                Int       @id @default(autoincrement())
   name              String
   codigo            String
-  precio            Float
-  tiempoPreparacion String
-  categoria         String
-  descripcion       String
-  imagen            String
+  price             Float
+  timePreparation   String
+  category          String
+  description       String
+  image             String
   promocion         String
-  estado            String
+  state             stateProducto
   order             OrderProduct[] // Relación muchos a muchos con Pedido
   mesas             MesaProduct[]   // Relación muchos a muchos con Mesa
-  promotion       Promotion @relation(fields: [promocionId], references: [id])  // Relación uno a muchos con Promocion
-  promocionId       Int
-  categorias        Category @relation(fields: [categoriaId], references: [id])  // Relación uno a muchos con Category
-  categoriaId       Int
+  promotion         Promotion         @relation(fields: [promotionId], references: [id])  // Relación uno a muchos con Promocion
+  promotionId       Int
+  Category          Category          @relation(fields: [categoryId], references: [id])  // Relación uno a muchos con Category
+  categoryId        Int
 }
 
 //tabla intermedia de muchos de productos y mesas 
 model MesaProduct {
-  id         Int      @id @default(autoincrement())
-  product   Product @relation(fields: [productId], references: [id])
-  productId Int
-  mesa       Mesa     @relation(fields: [mesaId], references: [id])
-  mesaId     Int
+  id                Int              @id @default(autoincrement())
+  product           Product          @relation(fields: [productId], references: [id])
+  productId         Int
+  mesa              Mesa             @relation(fields: [mesaId], references: [id])
+  mesaId            Int 
 
   @@unique([productId, mesaId]) // Asegurar unicidad en la relación
 }
 model OrderProduct {// Tabla intermedia para la relación muchos a muchos entre Producto y Pedido
-  id         Int      @id @default(autoincrement())
-  product   Product @relation(fields: [productId], references: [id])
+  id         Int                    @id @default(autoincrement())
+  product   Product                 @relation(fields: [productId], references: [id])
   productId Int
-  order     Order   @relation(fields: [orderId], references: [id])
+  order     Order                   @relation(fields: [orderId], references: [id])
   orderId   Int
 
   @@unique([productId, orderId]) // Asegurar unicidad en la relación
@@ -121,33 +118,31 @@ model OrderProduct {// Tabla intermedia para la relación muchos a muchos entre 
 
 //modelo de promocion
 model Promotion {
-  id       Int      @id @default(autoincrement())
-  descripcion   String
-  tipo   String
-  fechaInicio   DateTime
-  fechaFin   DateTime
-  estado   String
-  product   Product[]  // Relación uno a muchos con Producto
+  id             Int               @id @default(autoincrement())
+  description    String
+  type           String
+  startDate      DateTime
+  endDate        DateTime
+  state          statePromotion
+  product        Product[]  // Relación uno a muchos con Producto
 }
 
 //modelo de categoria
 model Category {
-  id       Int      @id @default(autoincrement())
-  nombre   String
-  descripcion   String
-  estado   String
-  product   Product[]  // Relación uno a muchos con Producto
+  id              Int                     @id @default(autoincrement())
+  name            String
+  description     String
+  estado          String
+  product         Product[]  // Relación uno a muchos con Producto
 
 }
 
-
-
 //enum  para los roles de usuario
 enum Role {
-  VENDEDOR
-  CAJA
-  COODINADOR
-  ADMIN
+  SELLER   //VENDEDOR
+  BOX      //CAJa
+  COORDINATOR   //COORDINADOR
+  ADMIN       //ADMINISTRADOR          
 }
 
 //enum para los estados de usuario
@@ -175,4 +170,26 @@ enum stateOrder {
   FALLIDA             //a orden de pago no se pudo procesar correctamente y ha fallado.
   PAGADO             //La orden de pago ha sido pagada.
 
+}
+
+enum stateMesa {
+  ACTIVO
+  INACTIVO
+}
+
+// enum stateMesa {
+//   LIBRE
+//   OCUPADA
+//   RESERVADA
+//   CERRADA
+// }
+
+enum stateProducto {
+  ACTIVO
+  INACTIVO
+}
+
+enum statePromotion {
+  ACTIVO
+  INACTIVO
 }
