@@ -24,6 +24,11 @@ class UserService {
           id: parseInt(id),
         },
       });
+      if (!results) {
+        const err = new Error("User not found");
+        err.code = 404;
+        throw err;
+      }
       return { success: true, results };
     } catch (error) {
       return { success: false, error };
@@ -44,6 +49,52 @@ class UserService {
         throw err;
       }
       return { success: true, results };
+    } catch (error) {
+      return { success: false, error };
+    }
+  }
+
+  async updateUser(userId, body) {
+    try {
+
+      const userVerifique = await this.getUserById(userId);
+      if (!userVerifique.success) throw new Error("User not found");
+
+      const results = await this.prisma.user.update({
+        where: {
+          id: parseInt(userId),
+        },
+        data: {
+          ...body,
+        },
+      });
+      let id = results.id;
+      let name = results.name;
+      let lasName = results.lasName;
+      return {
+        message: `El usuario ${name} ${lasName} ha sido actualizado correctamente.`,
+        success: true,
+        id,
+      };
+    } catch (error) {
+      return { success: false, error };
+    }
+  }
+
+  async deleteUser(userId) {
+    try {
+      const results = await this.prisma.user.delete({
+        where: {
+          id: parseInt(userId),
+        },
+      });
+      let id = results.id;
+      let name = results.name;
+      let lasName = results.lasName;
+      return { 
+        message: `El usuario ${name} ${lasName} ha sido eliminado correctamente.`,
+        success: true,
+        };
     } catch (error) {
       return { success: false, error };
     }
