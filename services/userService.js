@@ -96,8 +96,14 @@ class UserService {
     }
   }
 
-  async deleteUser(userId) {
+  async deleteUser(userId,token) {
     try {
+      const userVerifique = await this.getUserById(userId);
+      if (!userVerifique.success) throw new Error("User not found");
+
+      const userToken = await this.tokenVerify(token);
+      if (userToken.results.id !== parseInt(userId)) throw new Error("You are not authorized to update this user");   
+
       const results = await this.prisma.user.delete({
         where: {
           id: parseInt(userId),
