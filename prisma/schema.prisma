@@ -18,7 +18,7 @@ datasource db {
 model User {
   id              Int      @id @default(autoincrement())
   name            String
-  lasName         String
+  lastName        String
   usuario         String
   email           String
   password        String
