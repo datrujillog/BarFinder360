@@ -26,19 +26,16 @@ function userRouter(app) {
 
   //! REVISAR ESTE ENDPOINT SOBRE LA VALIDACION DEL TOKEN
   router.get("/:id", authValidation, async (req, res, next) => {
-      const userId = req.params.id;
-      const response = await userServi.getUserById(userId);
-      const token = req.headers.authorization.split(" ")[1];
+    const userId = req.params.id;
+    const response = await userServi.getUserById(userId);
+    const token = req.headers.authorization.split(" ")[1];
 
-      response.success
-        ? authResponse(res, 201, true, "user found", {
-            payload: response,
-            token: token,
-          })
-        : errorResponse(res, response.error);
-      
-    
-    
+    response.success
+      ? authResponse(res, 201, true, "user found", {
+          payload: response,
+          token: token,
+        })
+      : errorResponse(res, response.error);
   });
 
   router.put("/:id", authValidation, async (req, res, next) => {
@@ -57,7 +54,7 @@ function userRouter(app) {
   router.delete("/:id", authValidation, async (req, res, next) => {
     const userId = req.params.id;
     const token = req.headers.authorization.split(" ")[1];
-    const response = await userServi.deleteUser(userId,token);
+    const response = await userServi.deleteUser(userId, token);
     response.success
       ? authResponse(res, 201, true, "User deleted", {
           payload: response,
