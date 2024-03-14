@@ -2,6 +2,7 @@ import express, { response } from "express";
 import AuthService from "../services/authService.js";
 import { errorResponse, authResponse, Responsee } from "../helpers/response.js";
 import { asyncHandler } from "../helpers/utils.js";
+import { valitorUserSignup } from "../middleware/express-validator.js";
 // import { checkPermission } from "../middleware/checkPermission.js";
 
 function authRouter(app) {
@@ -24,7 +25,7 @@ function authRouter(app) {
   });
 
   router.post(
-    "/signup",
+    "/signup", valitorUserSignup,
     async (req, res, next) => {
       const body = req.body;
       const response = await authServi.signup(body);
