@@ -18,7 +18,7 @@ export const valitorUserSignup = [
                     return true;
                 }),
 
-    body("lasName").notEmpty().withMessage("Name is required")
+    body("lastName").notEmpty().withMessage("Name is required")
                     .isString().withMessage("Name must be a string")
                     .custom((value) => {
                             if (value.length < 3) {
