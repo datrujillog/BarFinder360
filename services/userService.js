@@ -1,4 +1,8 @@
 import { PrismaClient } from "@prisma/client";
+import jwt from "jsonwebtoken";
+
+import config from "../config/config.js";
+import authValidation from "../middleware/authValidation.js";
 
 class UserService {
   constructor() {
@@ -53,12 +57,23 @@ class UserService {
       return { success: false, error };
     }
   }
-
-  async updateUser(userId, body) {
+  //metodo para estraer el token de la request
+  async tokenVerify(token) {
     try {
+      const { results } = jwt.verify(token, config.jwtSecret);
+      return { success: true, results };
+    } catch (error) {
+      return { success: false, error };
+    }
+  }
 
+  async updateUser(userId, body, token) {
+    try {
       const userVerifique = await this.getUserById(userId);
       if (!userVerifique.success) throw new Error("User not found");
+
+      const userToken = await this.tokenVerify(token);
+      if (userToken.results.id !== parseInt(userId)) throw new Error("You are not authorized to update this user");   
 
       const results = await this.prisma.user.update({
         where: {
@@ -91,10 +106,10 @@ class UserService {
       let id = results.id;
       let name = results.name;
       let lasName = results.lasName;
-      return { 
+      return {
         message: `El usuario ${name} ${lasName} ha sido eliminado correctamente.`,
         success: true,
-        };
+      };
     } catch (error) {
       return { success: false, error };
     }
