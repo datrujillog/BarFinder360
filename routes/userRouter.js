@@ -1,9 +1,6 @@
 import express from "express";
 import UserService from "../services/userService.js";
-import { checkPermission } from "../middleware/checkPermission.js";
-
-// const UserService = require("../services/userService");
-
+import authValidation from "../middleware/authValidation.js";
 
 
 
@@ -13,15 +10,14 @@ function userRouter(app) {
   const userServi = new UserService();
 
 //   instanciar el servicio
-
   app.use("/api/users", router);
 
-  router.get("/",    async (req, res, next) => {
+
+  router.get("/", authValidation,async (req, res, next) => {
     try {
       const body = req.body;
       const users = await userServi.getAllUsers(body);
-      console.log(users);
-      res.status(201).json({
+      res.status(200).json({
         message: "User created",
         users,
       });
@@ -30,7 +26,7 @@ function userRouter(app) {
     }
   });
 
-  router.get("/:id", async (req, res, next) => {
+  router.get("/:id", authValidation, async (req, res, next) => {
     try {
       const userId = req.params.id;
       const users = await userServi.getUserById(userId);
