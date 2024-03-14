@@ -1,46 +1,41 @@
 import jwt from "jsonwebtoken";
 import config from "../config/config.js";
 
-// const { 404} = require("../helpers/sendStatus");
 
 function authValidation(req, res, next) {
   const bearer = req.headers.authorization;
 
   if (bearer && bearer.startsWith("Bearer")) {
-    // const split = bearer.split("Bearer ")
-
-    // const token = split[1]
-    const [, token] = bearer.split("Bearer "); //Destructuring
+    const [, token] = bearer.split("Bearer ");
 
     if (token) {
       try {
         const decoded = jwt.verify(token, config.jwtSecret);
-
         console.log(decoded);
-
         req.user = decoded;
-
         return next();
-      } catch ({ message, name }) {
-        // const message = error.message
-        // const name = error.name
-        return res.status(404).json({
-          error: true,
-          message,
-          type: name,
-        });
+      } catch (error) {
+        if (error.name === "TokenExpiredError") {
+          return res.status(401).json({
+            error: true,
+            message: "The token has expired.",
+            type: "TokenExpiredError",
+          });
+        } else {
+          return res.status(401).json({
+            error: true,
+            message: "Invalid Token.",
+            type: error.name,
+          });
+        }
       }
     }
   }
 
-  return res.status(404).json({
+  return res.status(401).json({
     error: true,
-    message: "Insufficient permissions",
+    message: "Authentication token not provided.",
   });
 }
-
-
-
-
 
 export default authValidation;
