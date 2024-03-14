@@ -13,26 +13,28 @@ const errorResponse = (res = response, error) => {
         })),
       });
     }
-    // if (error.code === 11000) {
-    //   return res.status(400).json({
-    //     ok: false,
-    //     errors: Object.keys(error.keyValue).map((field) => ({
-    //       message: `The ${field} ${error.keyValue[field]} is already in use`,
-    //       field,
-    //     })),
-    //   });
-    // }
+    if (error.code === "P2025") {
+      return res.status(400).json({
+        ok: false,
+        errors: [{ message: error.message || error.errors }],
+      });
+    }
 
     return res.status(400).json({
       ok: false,
       errors: [{ message: error.message || error.errors }],
     });
   }
+    return res.status(500).json({
+      ok: false,
+      errors: [{ message: error.message || error }],
+    });
 
-  return res.status(500).json({
-    ok: false,
-    errors: [{ message: error.message || error }],
-  });
+    // return res.status(P2025).json({
+    //   ok: false,
+    //   errors: [{ message: error.message || error }],
+    // });
+    
 };
 
 const authResponse = async (res = response, status, ok, message, data) => {
