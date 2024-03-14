@@ -1,8 +1,8 @@
 import express from "express";
 import UserService from "../services/userService.js";
+import { checkPermission } from "../middleware/checkPermission.js";
 
 // const UserService = require("../services/userService");
-
 
 
 
@@ -16,7 +16,7 @@ function userRouter(app) {
 
   app.use("/api/users", router);
 
-  router.get("/", async (req, res, next) => {
+  router.get("/",    async (req, res, next) => {
     try {
       const body = req.body;
       const users = await userServi.getAllUsers(body);
