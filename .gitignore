@@ -129,3 +129,4 @@ prisma/migrations/20240313000106_initial/migration.sql
 db/bar_db.mwb
 prisma/migrations/migration_lock.toml
 prisma/migrations/20240313033357_initial_2/migration.sql
+prisma/migrations/20240314002859_initial_3/migration.sql
