@@ -24,17 +24,21 @@ function userRouter(app) {
     }
   });
 
+  //! REVISAR ESTE ENDPOINT SOBRE LA VALIDACION DEL TOKEN
   router.get("/:id", authValidation, async (req, res, next) => {
-    try {
       const userId = req.params.id;
-      const users = await userServi.getUserById(userId);
-      res.status(201).json({
-        message: "User created",
-        users,
-      });
-    } catch (error) {
-      next(error);
-    }
+      const response = await userServi.getUserById(userId);
+      const token = req.headers.authorization.split(" ")[1];
+
+      response.success
+        ? authResponse(res, 201, true, "user found", {
+            payload: response,
+            token: token,
+          })
+        : errorResponse(res, response.error);
+      
+    
+    
   });
 
   router.put("/:id", authValidation, async (req, res, next) => {
@@ -43,7 +47,7 @@ function userRouter(app) {
     const token = req.headers.authorization.split(" ")[1];
     const response = await userServi.updateUser(userId, body, token);
     response.success
-      ? authResponse(res, 201, true, "User updated", {
+      ? authResponse(res, 201, true, "User ", {
           payload: response,
           token: token,
         })
