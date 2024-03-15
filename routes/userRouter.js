@@ -12,16 +12,19 @@ function userRouter(app) {
   app.use("/api/users", router);
 
   router.get("/", authValidation, async (req, res, next) => {
-    try {
       const body = req.body;
       const users = await userServi.getAllUsers(body);
-      res.status(200).json({
-        message: "User created",
-        users,
-      });
-    } catch (error) {
-      next(error);
-    }
+      const token = req.headers.authorization.split(" ")[1];
+
+      users.success
+        ? authResponse(res, 201, true, "Users found successfully", {
+            payload: users,
+            token: token,
+          })
+        : errorResponse(res, users.error);
+      
+    
+    
   });
 
   //! REVISAR ESTE ENDPOINT SOBRE LA VALIDACION DEL TOKEN
