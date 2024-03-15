@@ -16,23 +16,48 @@ function authRouter(app) {
   router.post("/login", async (req, res, next) => {
     const body = req.body;
     const response = await authServi.login(body);
-    response.success
-      ? authResponse(res, 201, true, "login successful", {
-          payload: response.user,
-          token: response.token,
-        })
-      : errorResponse(res, response.error);
+
+    return res.cookie("token", response.token, {
+      httpOnly: true,
+      expires: new Date(Date.now() + 1000 * 60 * 60 * 24), // 1 day
+      // secure: process.env.NODE_ENV === "production",
+      secure: false,
+    }).json({response});
+
+
+
+
+
+
+    // response.success
+    //   ? authResponse(res, 201, true, "login successful", {
+    //       payload: response.user,
+    //       token: response.token,
+    //     })
+    //   : errorResponse(res, response.error);
   });
 
   router.post("/signup", valitorUserSignup, async (req, res, next) => {
     const body = req.body;
     const response = await authServi.signup(body);
-    response.success
-      ? Responsee(res, 201, true, "signup successful", {
-          payload: response.user,
-          token: response.token,
-        })
-      : errorResponse(res, response.error);
+    
+
+    return res.cookie("token", response.token, {
+      httpOnly: true,
+      expires: new Date(Date.now() + 1000 * 60 * 60 * 24), // 1 day
+      // secure: process.env.NODE_ENV === "production",
+      secure: false,
+    }).json({response});
+
+
+
+
+  //   response.success
+  //     ? Responsee(res, 201, true, "signup successful", {
+  //         payload: response.user,
+  //         token: response.token,
+  //       })
+  //     : errorResponse(res, response.error);
   });
 
   return router;
