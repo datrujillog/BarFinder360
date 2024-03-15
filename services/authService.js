@@ -42,7 +42,8 @@ class AuthService {
         data.password = await this.#encrypt(data.password);
       }
       const user = await this.#client.user.create({ data });
-      return { success: true, user };
+      const token = await this.crearToken(user);
+      return { success: true, user, token};
     } catch (error) {
       return { success: false, error };
     }
