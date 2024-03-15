@@ -5,16 +5,16 @@ import config from "../config/config.js";
 import authValidation from "../middleware/authValidation.js";
 
 class UserService {
+  #client;
   constructor() {
-    this.prisma = new PrismaClient();
+    this.#client = new PrismaClient();
   }
 
+//! REVISAR ESTE ENDPOINT SOBRE LA VALIDACION DEL TOKEN
   async getAllUsers() {
     try {
-      const results = await this.prisma.user.findMany();
-      const count = await this.prisma.user.count();
-
-      console.log(results);
+      const results = await this.#client.user.findMany();
+      const count = await this.#client.user.count();
       return { success: true, count, results };
     } catch (error) {
       return { success: false, error };
@@ -23,7 +23,7 @@ class UserService {
 
   async getUserById(id) {
     try {
-      const results = await this.prisma.user.findUnique({
+      const results = await this.#client.user.findUnique({
         where: {
           id: parseInt(id),
         },
@@ -41,7 +41,7 @@ class UserService {
 
   async getByEmail(email) {
     try {
-      const results = await this.prisma.user.findFirst({
+      const results = await this.#client.user.findFirst({
         //busca el primer usuario que cumpla con la condicion de email
         where: {
           email: email,
@@ -58,7 +58,7 @@ class UserService {
     }
   }
   //metodo para estraer el token de la request
-  async tokenVerify(token) {
+  async #tokenVerify(token) {
     try {
       const { results } = jwt.verify(token, config.jwtSecret);
       return { success: true, results };
@@ -72,10 +72,10 @@ class UserService {
       const userVerifique = await this.getUserById(userId);
       if (!userVerifique.success) throw new Error("User not found");
 
-      const userToken = await this.tokenVerify(token);
+      const userToken = await this.#tokenVerify(token);
       if (userToken.results.id !== parseInt(userId)) throw new Error("You are not authorized to update this user");   
 
-      const results = await this.prisma.user.update({
+      const results = await this.#client.user.update({
         where: {
           id: parseInt(userId),
         },
@@ -85,9 +85,9 @@ class UserService {
       });
       let id = results.id;
       let name = results.name;
-      let lasName = results.lasName;
+      let lasName = results.lastName;
       return {
-        message: `El usuario ${name} ${lasName} ha sido actualizado correctamente.`,
+        message: `El usuario ${name} ${lastName} ha sido actualizado correctamente.`,
         success: true,
         id,
       };
@@ -101,19 +101,19 @@ class UserService {
       const userVerifique = await this.getUserById(userId);
       if (!userVerifique.success) throw new Error("User not found");
 
-      const userToken = await this.tokenVerify(token);
-      if (userToken.results.id !== parseInt(userId)) throw new Error("You are not authorized to update this user");   
+      // const userToken = await this.#tokenVerify(token);
+      // if (userToken.results.id !== parseInt(userId)) throw new Error("You are not authorized to update this user");   
 
-      const results = await this.prisma.user.delete({
+      const results = await this.#client.user.delete({
         where: {
           id: parseInt(userId),
         },
       });
       let id = results.id;
       let name = results.name;
-      let lasName = results.lasName;
+      let lasName = results.lastName;
       return {
-        message: `El usuario ${name} ${lasName} ha sido eliminado correctamente.`,
+        message: `El usuario ${name} ${lastName} ha sido eliminado correctamente.`,
         success: true,
       };
     } catch (error) {
