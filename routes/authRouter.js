@@ -24,19 +24,16 @@ function authRouter(app) {
       : errorResponse(res, response.error);
   });
 
-  router.post(
-    "/signup", valitorUserSignup,
-    async (req, res, next) => {
-      const body = req.body;
-      const response = await authServi.signup(body);
-      response.success
-        ? Responsee(res, 201, true, "signup successful", {
-            payload: response.user,
-            token: response.token,
-          })
-        : errorResponse(res, response.error);
-    }
-  );
+  router.post("/signup", valitorUserSignup, async (req, res, next) => {
+    const body = req.body;
+    const response = await authServi.signup(body);
+    response.success
+      ? Responsee(res, 201, true, "signup successful", {
+          payload: response.user,
+          token: response.token,
+        })
+      : errorResponse(res, response.error);
+  });
 
   return router;
 }
