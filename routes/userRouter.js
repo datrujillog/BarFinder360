@@ -17,7 +17,7 @@ function userRouter(app) {
       const token = req.headers.authorization.split(" ")[1];
 
       users.success
-        ? authResponse(res, 201, true, "Users found successfully", {
+        ? authResponse(res, 200, true, "Users found successfully", {
             payload: users,
             token: token,
           })
@@ -34,7 +34,7 @@ function userRouter(app) {
     const token = req.headers.authorization.split(" ")[1];
 
     response.success
-      ? authResponse(res, 201, true, "user found", {
+      ? authResponse(res, 200, true, "user found", {
           payload: response,
           token: token,
         })
@@ -47,7 +47,7 @@ function userRouter(app) {
     const token = req.headers.authorization.split(" ")[1];
     const response = await userServi.updateUser(userId, body, token);
     response.success
-      ? authResponse(res, 201, true, "User ", {
+      ? authResponse(res, 200, true, "User ", {
           payload: response,
           token: token,
         })
