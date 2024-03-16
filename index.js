@@ -6,6 +6,7 @@ import config from "./config/config.js";
 //importar las rutas 
 import Auth from "./routes/authRouter.js";
 import User from "./routes/userRouter.js";
+import Rol from "./routes/rolRouter.js";
 
 
 const port = 5001;
@@ -20,6 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 //utilizar rutas
 Auth(app);
 User(app);
+Rol(app);
 
 //middleware de errores
 app.use((error, req, res, next) => {
