@@ -13,6 +13,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Rol {
+  id              Int      @id @default(autoincrement())
+  name            Role   
+  user            User?
+  accionHasModule AccionHasModule[]  // Relación uno a muchos con AccionHasModule
+}
+
+
 
 //modelo de usuario
 model User {
@@ -25,11 +33,14 @@ model User {
   phone           String
   NameBusiness    String
   tipoNegocio     String
-  rol             Role               @default(ADMIN)
+  // rol             Role               @default(ADMIN)
   state           EstadoUser         @default(ACTIVO)
-  shift           Shift?   // Relación uno a uno con Turno
-  mesas           UserMesa[]   // Relación muchos a muchos con Mesa
+  shift           Shift?             // Relación uno a uno con Turno
+  mesas           UserMesa[]         // Relación muchos a muchos con Mesa
+  roles           Rol?               @relation(fields: [rolesId], references: [id]) // Relación uno a uno con Rol, ahora opcional
+  rolesId         Int?               @unique
 }
+
 
 //modelo de turno
 model Shift {
@@ -144,6 +155,53 @@ enum Role {
   COORDINATOR   //COORDINADOR
   ADMIN       //ADMINISTRADOR          
 }
+
+//mode Modulo 
+model Modulo {
+  id              Int      @id @default(autoincrement())
+  name            String
+  accionHasModule AccionHasModule[]  // Relación uno a muchos con AccionHasModule
+   // user            User[] 
+}
+
+//model de aciones
+model Accion {
+  id              Int      @id @default(autoincrement())
+  name            String
+  accionHasModule AccionHasModule[]  // Relación uno a muchos con AccionHasModule
+}
+
+//tabla intermedia
+model AccionHasModule {
+  id              Int      @id @default(autoincrement())
+  accion          Accion   @relation(fields: [accionId], references: [id])
+  accionId        Int 
+  modulo          Modulo   @relation(fields: [moduloId], references: [id])
+  moduloId        Int
+  rol             Rol      @relation(fields: [rolId], references: [id])
+  rolId           Int
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //enum para los estados de usuario
 enum EstadoUser {
