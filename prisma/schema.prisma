@@ -24,11 +24,11 @@ model Rol {
 
 //modelo de usuario
 model User {
-  id              Int      @id @default(autoincrement())
+  id              Int               @id @default(autoincrement())
   name            String
   lastName        String
-  usuario         String
-  email           String
+  usuario         String            //@unique
+  email           String            //@unique
   password        String
   phone           String
   NameBusiness    String
@@ -55,40 +55,40 @@ model Shift {
 //modelo de pedido
 
 model Order {
-  id              Int                  @id @default(autoincrement())
+  id              Int                   @id @default(autoincrement())
   date            DateTime
   amount          Int
   total           Float
   state           stateOrder
   product         OrderProduct[]  // Relación muchos a muchos con Producto
-  mesa            Mesa?                 @relation(fields: [mesaId], references: [id])  // Relación uno a muchos con Mesa
+  mesa            Mesa?                  @relation(fields: [mesaId], references: [id])  // Relación uno a muchos con Mesa
   mesaId          Int?                   @unique  // Campo único para la relación uno a uno con Mesa
  
 }
 
 model Mesa {
-  id              Int      @id @default(autoincrement())
+  id              Int                    @id @default(autoincrement())
   date            DateTime
   name            String
   description     String
   state           stateMesa
-  order           Order?   // Relación uno a muchos con order
-  users           UserMesa[]    // Relación muchos a muchos con User
-  products        MesaProduct[]  // Relación muchos a muchos con Producto
+  order           Order?                    // Relación uno a muchos con order
+  users           UserMesa[]               // Relación muchos a muchos con User
+  products        MesaProduct[]           // Relación muchos a muchos con Producto
 }
 
 model UserMesa {  //tabla intermedia para la relación muchos a muchos entre User y Mesa
-  id       Int      @id @default(autoincrement())
-  users     User     @relation(fields: [userId], references: [id])
-  userId   Int
-  mesas     Mesa     @relation(fields: [mesaId], references: [id])
-  mesaId   Int
+  id              Int                     @id @default(autoincrement())
+  users           User                    @relation(fields: [userId], references: [id])
+  userId          Int
+  mesas           Mesa                    @relation(fields: [mesaId], references: [id])
+  mesaId          Int
   
   @@unique([userId, mesaId]) // Asegurar unicidad en la relación
 }
 
 model Product {
-  id                Int       @id @default(autoincrement())
+  id                Int                    @id @default(autoincrement())
   name              String
   codigo            String
   price             Float
@@ -96,43 +96,43 @@ model Product {
   description       String
   image             String
   state             stateProducto
-  order             OrderProduct[] // Relación muchos a muchos con Pedido
-  mesas             MesaProduct[]   // Relación muchos a muchos con Mesa
-  promotion         Promotion         @relation(fields: [promotionId], references: [id])  // Relación uno a muchos con Promocion
+  order             OrderProduct[]          // Relación muchos a muchos con Pedido
+  mesas             MesaProduct[]           // Relación muchos a muchos con Mesa
+  promotion         Promotion               @relation(fields: [promotionId], references: [id])  // Relación uno a muchos con Promocion
   promotionId       Int
-  Category          Category          @relation(fields: [categoryId], references: [id])  // Relación uno a muchos con Category
+  Category          Category                @relation(fields: [categoryId], references: [id])  // Relación uno a muchos con Category
   categoryId        Int
 }
 
 //tabla intermedia de muchos de productos y mesas 
 model MesaProduct {
-  id                Int              @id @default(autoincrement())
-  product           Product          @relation(fields: [productId], references: [id])
+  id                Int                     @id @default(autoincrement())
+  product           Product                 @relation(fields: [productId], references: [id])
   productId         Int
-  mesa              Mesa             @relation(fields: [mesaId], references: [id])
+  mesa              Mesa                    @relation(fields: [mesaId], references: [id])
   mesaId            Int 
 
   @@unique([productId, mesaId]) // Asegurar unicidad en la relación
 }
-model OrderProduct {// Tabla intermedia para la relación muchos a muchos entre Producto y Pedido
-  id         Int                    @id @default(autoincrement())
-  product   Product                 @relation(fields: [productId], references: [id])
-  productId Int
-  order     Order                   @relation(fields: [orderId], references: [id])
-  orderId   Int
+model OrderProduct {                        // Tabla intermedia para la relación muchos a muchos entre Producto y Pedido
+  id                Int                     @id @default(autoincrement())
+  product           Product                 @relation(fields: [productId], references: [id])
+  productId         Int
+  order             Order                   @relation(fields: [orderId], references: [id])
+  orderId           Int
 
-  @@unique([productId, orderId]) // Asegurar unicidad en la relación
+  @@unique([productId, orderId])             // Asegurar unicidad en la relación
 }
 
 //modelo de promocion
 model Promotion {
-  id             Int               @id @default(autoincrement())
+  id             Int                       @id @default(autoincrement())
   description    String
   type           String
   startDate      DateTime
   endDate        DateTime
   state          statePromotion
-  product        Product[]  // Relación uno a muchos con Producto
+  product        Product[]                  // Relación uno a muchos con Producto
 }
 
 //modelo de categoria
@@ -141,7 +141,7 @@ model Category {
   name            String
   description     String
   statate         stateCategory
-  product         Product[]  // Relación uno a muchos con Producto
+  product         Product[]               // Relación uno a muchos con Producto
 
 }
 
@@ -149,45 +149,29 @@ model Category {
 
 //mode Modulo 
 model Modulo {
-  id              Int      @id @default(autoincrement())
+  id              Int                       @id @default(autoincrement())
   name            String
-  accionHasModule AccionHasModule[]  // Relación uno a muchos con AccionHasModule
+  accionHasModule AccionHasModule[]         // Relación uno a muchos con AccionHasModule
    // user            User[] 
 }
 
 //model de aciones
 model Accion {
-  id              Int      @id @default(autoincrement())
+  id              Int                      @id @default(autoincrement())
   name            String
-  accionHasModule AccionHasModule[]  // Relación uno a muchos con AccionHasModule
+  accionHasModule AccionHasModule[]        // Relación uno a muchos con AccionHasModule
 }
 
 //tabla intermedia
 model AccionHasModule {
-  id              Int      @id @default(autoincrement())
-  accion          Accion   @relation(fields: [accionId], references: [id])
+  id              Int                      @id @default(autoincrement())
+  accion          Accion                   @relation(fields: [accionId], references: [id])
   accionId        Int 
-  modulo          Modulo   @relation(fields: [moduloId], references: [id])
+  modulo          Modulo                   @relation(fields: [moduloId], references: [id])
   moduloId        Int
-  rol             Rol      @relation(fields: [rolId], references: [id])
+  rol             Rol                      @relation(fields: [rolId], references: [id])
   rolId           Int
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -222,28 +206,27 @@ enum stateOrder {
 }
 
 enum stateMesa {
-  ACTIVO
-  INACTIVO
+  ASSET              // ACTIVO
+  IDLE               // INACTIVO
+  FREE               // LIBRE
+  BUSY
+  RESERVED           // RESERVADA             
+  CLOSED
 }
 
-// enum stateMesa {
-//   LIBRE
-//   OCUPADA
-//   RESERVADA
-//   CERRADA
-// }
+
 
 enum stateProducto {
-  ACTIVO
-  INACTIVO
+  ASSET              // ACTIVO
+  IDLE               // INACTIVO
 }
 
 enum statePromotion {
-  ACTIVO
-  INACTIVO
+  ASSET              // ACTIVO
+  IDLE              // INACTIVO
 }
 
 enum stateCategory {
-  ACTIVO
-  INACTIVO
+  ASSET              // ACTIVO
+  IDLE             // INACTIVO
 }
