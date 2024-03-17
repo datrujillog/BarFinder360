@@ -15,8 +15,8 @@ datasource db {
 
 model Rol {
   id              Int      @id @default(autoincrement())
-  name            Role   
-  user            User?
+  name            String   
+  user            User[]   // Relación uno a muchos con User
   accionHasModule AccionHasModule[]  // Relación uno a muchos con AccionHasModule
 }
 
@@ -33,12 +33,11 @@ model User {
   phone           String
   NameBusiness    String
   tipoNegocio     String
-  // rol             Role               @default(ADMIN)
   state           EstadoUser         @default(ACTIVO)
   shift           Shift?             // Relación uno a uno con Turno
   mesas           UserMesa[]         // Relación muchos a muchos con Mesa
-  roles           Rol?               @relation(fields: [rolesId], references: [id]) // Relación uno a uno con Rol, ahora opcional
-  rolesId         Int?               @unique
+  roles           Rol?               @relation(fields: [rolesId], references: [id])  // Relación uno a uno con Rol, ahora opcional
+  rolesId         Int?               
 }
 
 
@@ -56,14 +55,14 @@ model Shift {
 //modelo de pedido
 
 model Order {
-  id              Int               @id @default(autoincrement())
+  id              Int                  @id @default(autoincrement())
   date            DateTime
   amount          Int
   total           Float
   state           stateOrder
   product         OrderProduct[]  // Relación muchos a muchos con Producto
-  mesa            Mesa @relation(fields: [mesaId], references: [id])  // Relación uno a uno con Mesa
-  mesaId          Int @unique  // Campo único para la relación uno a uno con Mesa
+  mesa            Mesa?                 @relation(fields: [mesaId], references: [id])  // Relación uno a muchos con Mesa
+  mesaId          Int?                   @unique  // Campo único para la relación uno a uno con Mesa
  
 }
 
@@ -73,7 +72,7 @@ model Mesa {
   name            String
   description     String
   state           stateMesa
-  order           Order?   // Relación uno a uno con Pedido
+  order           Order?   // Relación uno a muchos con order
   users           UserMesa[]    // Relación muchos a muchos con User
   products        MesaProduct[]  // Relación muchos a muchos con Producto
 }
@@ -94,10 +93,8 @@ model Product {
   codigo            String
   price             Float
   timePreparation   String
-  category          String
   description       String
   image             String
-  promocion         String
   state             stateProducto
   order             OrderProduct[] // Relación muchos a muchos con Pedido
   mesas             MesaProduct[]   // Relación muchos a muchos con Mesa
@@ -143,18 +140,12 @@ model Category {
   id              Int                     @id @default(autoincrement())
   name            String
   description     String
-  estado          String
+  statate         stateCategory
   product         Product[]  // Relación uno a muchos con Producto
 
 }
 
-//enum  para los roles de usuario
-enum Role {
-  SELLER   //VENDEDOR
-  BOX      //CAJa
-  COORDINATOR   //COORDINADOR
-  ADMIN       //ADMINISTRADOR          
-}
+
 
 //mode Modulo 
 model Modulo {
@@ -248,6 +239,11 @@ enum stateProducto {
 }
 
 enum statePromotion {
+  ACTIVO
+  INACTIVO
+}
+
+enum stateCategory {
   ACTIVO
   INACTIVO
 }
