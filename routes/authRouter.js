@@ -17,39 +17,51 @@ function authRouter(app) {
     const body = req.body;
     const response = await authServi.login(body);
 
-    if (response.success) {
-      res.cookie("token", response.token, {
-        httpOnly: true,
-        expires: new Date(Date.now() + 1000 * 60 * 60 * 24), // 1 day
-        secure: false,
-      });
-      authResponse(res, 201, true, "login successful", {
-        payload: response.user,
-        token: response.token,
-      });
-    } else {
-      errorResponse(res, response.error);
-    }
+    response.success
+      ? res.cookie("token", response.token, {
+          httpOnly: true,
+          expires: new Date(Date.now() + 1000 * 60 * 60 * 24), // 1 day
+          secure: false,
+        }) &&
+        authResponse(res, 201, true, "signup successful", {
+          payload: response.user,
+          token: response.token,
+        })
+      : errorResponse(res, response.error);
+  
   });
 
   router.post("/signup", valitorUserSignup, async (req, res, next) => {
     const body = req.body;
     const response = await authServi.signup(body);
 
-    if (response.success) {
-      res.cookie("token", response.token, {
-        httpOnly: true,
-        expires: new Date(Date.now() + 1000 * 60 * 60 * 24), // 1 day
-        secure: false,
-      });
-      authResponse(res, 201, true, "login successful", {
-        payload: response.user,
-        token: response.token,
-      });
-    } else {
-      errorResponse(res, response.error);
-    }
+    response.success
+      ? res.cookie("token", response.token, {
+          httpOnly: true,
+          expires: new Date(Date.now() + 1000 * 60 * 60 * 24), // 1 day
+          secure: false,
+        }) &&
+        authResponse(res, 201, true, "signup successful", {
+          payload: response.user,
+          token: response.token,
+        })
+      : errorResponse(res, response.error);
   });
+
+  //   if (response.success) {
+  //     res.cookie("token", response.token, {
+  //       httpOnly: true,
+  //       expires: new Date(Date.now() + 1000 * 60 * 60 * 24), // 1 day
+  //       secure: false,
+  //     });
+  //     authResponse(res, 201, true, "login successful", {
+  //       payload: response.user,
+  //       token: response.token,
+  //     });
+  //   } else {
+  //     errorResponse(res, response.error);
+  //   }
+  // });
 
   return router;
 }
