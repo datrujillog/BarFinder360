@@ -37,7 +37,9 @@ model User {
   shift           Shift?             // Relación uno a uno con Turno
   mesas           UserMesa[]         // Relación muchos a muchos con Mesa
   roles           Rol?               @relation(fields: [rolesId], references: [id])  // Relación uno a uno con Rol, ahora opcional
-  rolesId         Int?               
+  rolesId         Int?     
+  orderedProducts OrderProduct[]  // Relación uno a muchos con OrderProduct          
+  
 }
 
 
@@ -57,12 +59,11 @@ model Shift {
 model Order {
   id              Int                   @id @default(autoincrement())
   date            DateTime
-  amount          Int
   total           Float
   state           stateOrder
   product         OrderProduct[]  // Relación muchos a muchos con Producto
   mesa            Mesa?                  @relation(fields: [mesaId], references: [id])  // Relación uno a muchos con Mesa
-  mesaId          Int?                   @unique  // Campo único para la relación uno a uno con Mesa
+  mesaId          Int?                   
  
 }
 
@@ -72,9 +73,9 @@ model Mesa {
   name            String
   description     String
   state           stateMesa
-  order           Order?                    // Relación uno a muchos con order
+  order           Order[]                    // Relación uno a muchos con order
   users           UserMesa[]               // Relación muchos a muchos con User
-  products        MesaProduct[]           // Relación muchos a muchos con Producto
+  // products        MesaProduct[]           // Relación muchos a muchos con Producto
 }
 
 model UserMesa {  //tabla intermedia para la relación muchos a muchos entre User y Mesa
@@ -97,29 +98,32 @@ model Product {
   image             String
   state             stateProducto
   order             OrderProduct[]          // Relación muchos a muchos con Pedido
-  mesas             MesaProduct[]           // Relación muchos a muchos con Mesa
-  promotion         Promotion               @relation(fields: [promotionId], references: [id])  // Relación uno a muchos con Promocion
-  promotionId       Int
+  // mesas             MesaProduct[]           // Relación muchos a muchos con Mesa
+  promotion         Promotion?               @relation(fields: [promotionId], references: [id])  // Relación uno a muchos con Promocion
+  promotionId       Int?
   Category          Category                @relation(fields: [categoryId], references: [id])  // Relación uno a muchos con Category
   categoryId        Int
 }
 
 //tabla intermedia de muchos de productos y mesas 
-model MesaProduct {
-  id                Int                     @id @default(autoincrement())
-  product           Product                 @relation(fields: [productId], references: [id])
-  productId         Int
-  mesa              Mesa                    @relation(fields: [mesaId], references: [id])
-  mesaId            Int 
+// model MesaProduct {
+//   id                Int                     @id @default(autoincrement())
+//   product           Product                 @relation(fields: [productId], references: [id])
+//   productId         Int
+//   mesa              Mesa                    @relation(fields: [mesaId], references: [id])
+//   mesaId            Int 
 
-  @@unique([productId, mesaId]) // Asegurar unicidad en la relación
-}
+//   @@unique([productId, mesaId]) // Asegurar unicidad en la relación
+// }
 model OrderProduct {                        // Tabla intermedia para la relación muchos a muchos entre Producto y Pedido
   id                Int                     @id @default(autoincrement())
+  units             Int
   product           Product                 @relation(fields: [productId], references: [id])
   productId         Int
   order             Order                   @relation(fields: [orderId], references: [id])
   orderId           Int
+  users             User                    @relation(fields: [userId], references: [id])
+  userId            Int
 
   @@unique([productId, orderId])             // Asegurar unicidad en la relación
 }
