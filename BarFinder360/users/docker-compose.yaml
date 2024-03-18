@@ -1,0 +1,33 @@
+version: '3.9'
+
+services:
+  postgres:
+    container_name: postgres_barfinder360
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=12345
+      - POSTGRES_DB=barfinder360_user_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./dbdata:/var/lib/postgresql/data
+
+  barfinder360:
+    container_name: barfinder360
+    build: .
+      # context: .
+      # dockerfile: Dockerfile
+    environment:
+      - PORT=5001
+    ports:
+      - '5001:5001'
+    depends_on:
+      - postgres
+
+      
+# este comando es para correr el contenedor de docker con el init
+# docker run -p 5001:5001 --init --rm --name users-barfinder360 users-barfinder360 
+
+# docker-compose
+# docker-compose up --build
