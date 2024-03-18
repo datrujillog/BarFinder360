@@ -2,7 +2,7 @@ FROM node
 
 
 # Create app directory
-WORKDIR /app
+WORKDIR /usr/src/app
 
 # Install app dependencies
 COPY package.json .
@@ -10,11 +10,35 @@ COPY package.json .
 RUN npm install
 
 # Bundle app source
-COPY /src /src
+COPY ./src ./src
+COPY app.js .
 
 # Expose the port the app runs on
 EXPOSE 5001
 
+RUN npx prisma init
+
+COPY ./prisma ./prisma
+
+COPY .env .
+
+RUN npx prisma generate
+
+
 # Serve the app
-CMD ["npm", "start"]
+# CMD ["prisma","generate","npm", "run","start"]
+ CMD ["npm", "run","start"]
+
+
+# Docker
+# docker build . -t users-barfinder360
+# Docker run users-barfinder360
+# docker run -d -p 5001:5001 --name users-barfinder360 users-barfinder360   // este comando es para correr el contenedor de docker
+
+# este comando es para correr el contenedor de docker con el init
+# docker run -p 5001:5001 --init --rm --name users-barfinder360 users-barfinder360 
+
+# docker-compose
+# docker-compose up --build
+
 
