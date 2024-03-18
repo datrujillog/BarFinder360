@@ -7,14 +7,39 @@ const router = express.Router();
 // INSTANCIAMOS LA CLASE UserService
 const userServ = new UserService();
 
+router.get("/ejemplo", async (req, res, next) => {
+    res.status(200).json({ message: "Hola mundo" });
+    
+});
+
+router.post("/create", async (req, res, next) => {
+    const body = req.body;
+    const response = await userServ.createUser(body);
+    response.success
+        ? authResponse(res, 201, true, "User created", {
+            payload: response,
+            token: response.token,
+        })
+        : errorResponse(res, response.error);
+});
+
+router.post("/createRole", async (req, res, next) => {
+    const body = req.body;
+    const response = await userServ.createRole(body);
+    response.success
+        ? authResponse(res, 201, true, "Role created", {
+            payload: response,
+            token: response.token,
+        })
+        : errorResponse(res, response.error);
+});
+
 router.get("/",  async (req, res, next) => {
     const body = req.body;
     const results = await userServ.getAllUsers(body);
     if (!results.success) return res.status(404).json({ error: results.error });
     return res.status(200).json({ results});
 });
-
-
 
 
 
