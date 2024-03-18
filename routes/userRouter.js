@@ -2,6 +2,7 @@ import express, { response } from "express";
 import UserService from "../services/userService.js";
 import authValidation from "../middleware/authValidation.js";
 import { authResponse, errorResponse } from "../helpers/response.js";
+import auth from "../middleware/auth.js";
 
 function userRouter(app) {
   const router = express.Router();
@@ -9,12 +10,12 @@ function userRouter(app) {
   const userServi = new UserService();
 
   //   instanciar el servicio
-  app.use("/api/users", router);
+  app.use("/api/users", auth,router);
 
-  router.get("/", authValidation, async (req, res, next) => {
+  router.get("/", auth, async (req, res, next) => {
       const body = req.body;
       console.log("COOKIES ",req.cookies);
-      // console.log(req.cookies.token);
+      console.log("HEADERS ",req.user);
       const users = await userServi.getAllUsers(body);
       // const token = req.headers.authorization.split(" ")[1];
       const tokenCookie = req.cookies.token;
@@ -31,7 +32,7 @@ function userRouter(app) {
   });
 
   //! REVISAR ESTE ENDPOINT SOBRE LA VALIDACION DEL TOKEN
-  router.get("/:id", authValidation, async (req, res, next) => {
+  router.get("/:id", async (req, res, next) => {
     const userId = req.params.id;
     const response = await userServi.getUserById(userId);
     const token = req.headers.authorization.split(" ")[1];
@@ -44,7 +45,7 @@ function userRouter(app) {
       : errorResponse(res, response.error);
   });
 
-  router.put("/:id", authValidation, async (req, res, next) => {
+  router.put("/:id", async (req, res, next) => {
     const userId = req.params.id;
     const body = req.body;
     const token = req.headers.authorization.split(" ")[1];
@@ -57,7 +58,7 @@ function userRouter(app) {
       : errorResponse(res, response.error);
   });
 
-  router.delete("/:id", authValidation, async (req, res, next) => {
+  router.delete("/:id", async (req, res, next) => {
     const userId = req.params.id;
     const token = req.headers.authorization.split(" ")[1];
     const response = await userServi.deleteUser(userId, token);
