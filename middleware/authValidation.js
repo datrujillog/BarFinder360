@@ -2,6 +2,8 @@ import jwt from "jsonwebtoken";
 import config from "../config/config.js";
 
 
+//!DEPRECATED FUNCTION NOT USED
+
 function authValidation(req, res, next) {
   const bearer = req.headers.authorization;
 
