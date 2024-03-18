@@ -7,7 +7,6 @@ import  config  from "./src/configs/config.js";
 import router from "./src/routes/user.rourte.js";
 
 const app = express();
-const port = 5001;
 
 app.use(express.json());
 app.use(morgan("dev"));
