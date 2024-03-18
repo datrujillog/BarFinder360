@@ -1,7 +1,8 @@
 import express, { response } from "express";
-import authValidation from "../middleware/authValidation.js";
-import { authResponse, errorResponse } from "../helpers/response.js";
+
 import roleService from "../services/rolSevice.js";
+
+import { authResponse, errorResponse } from "../helpers/response.js";
 
 function userRouter(app) {
   const router = express.Router();
