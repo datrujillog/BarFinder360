@@ -1,7 +1,9 @@
 import express, { response } from "express";
+
 import UserService from "../services/userService.js";
-import authValidation from "../middleware/authValidation.js";
+
 import { authResponse, errorResponse } from "../helpers/response.js";
+
 import auth from "../middleware/auth.js";
 
 function userRouter(app) {
@@ -10,25 +12,22 @@ function userRouter(app) {
   const userServi = new UserService();
 
   //   instanciar el servicio
-  app.use("/api/users", auth,router);
+  app.use("/api/users", auth, router);
 
   router.get("/", auth, async (req, res, next) => {
-      const body = req.body;
-      console.log("COOKIES ",req.cookies);
-      console.log("HEADERS ",req.user);
-      const users = await userServi.getAllUsers(body);
-      // const token = req.headers.authorization.split(" ")[1];
-      const tokenCookie = req.cookies.token;
+    const body = req.body;
+    console.log("COOKIES ", req.cookies);
+    console.log("HEADERS ", req.user);
+    const users = await userServi.getAllUsers(body);
+    // const token = req.headers.authorization.split(" ")[1];
+    const tokenCookie = req.cookies.token;
 
-      users.success
-        ? authResponse(res, 200, true, "Users found successfully", {
-            payload: users,
-            token: tokenCookie,
-          })
-        : errorResponse(res, users.error);
-      
-    
-    
+    users.success
+      ? authResponse(res, 200, true, "Users found successfully", {
+          payload: users,
+          token: tokenCookie,
+        })
+      : errorResponse(res, users.error);
   });
 
   //! REVISAR ESTE ENDPOINT SOBRE LA VALIDACION DEL TOKEN
