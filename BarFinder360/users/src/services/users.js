@@ -9,6 +9,32 @@ class UserService {
     this.#client = new PrismaClient();
   }
 
+  async createUser(body) {
+    try {
+      const results = await this.#client.user.create({
+        data: {
+          ...body,
+        },
+      });      
+      return { success: true, results, token };
+    } catch (error) {
+      return { success: false, error };
+    }
+  }
+
+  async createRole(body) {
+    try {
+      const results = await this.#client.role.create({
+        data: {
+          ...body,
+        },
+      });
+      return { success: true, results };
+    } catch (error) {
+      return { success: false, error };
+    }
+  }
+
 //! REVISAR ESTE ENDPOINT SOBRE LA VALIDACION DEL TOKEN
   async getAllUsers() {
     try {
