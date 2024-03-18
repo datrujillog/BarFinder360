@@ -13,13 +13,16 @@ function userRouter(app) {
 
   router.get("/", authValidation, async (req, res, next) => {
       const body = req.body;
+      console.log("COOKIES ",req.cookies);
+      // console.log(req.cookies.token);
       const users = await userServi.getAllUsers(body);
-      const token = req.headers.authorization.split(" ")[1];
+      // const token = req.headers.authorization.split(" ")[1];
+      const tokenCookie = req.cookies.token;
 
       users.success
         ? authResponse(res, 200, true, "Users found successfully", {
             payload: users,
-            token: token,
+            token: tokenCookie,
           })
         : errorResponse(res, users.error);
       
