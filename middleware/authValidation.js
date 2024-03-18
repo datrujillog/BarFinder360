@@ -11,7 +11,7 @@ function authValidation(req, res, next) {
     if (token) {
       try {
         const decoded = jwt.verify(token, config.jwtSecret);
-        console.log(decoded);
+        // console.log(decoded);
         req.user = decoded;
         return next();
       } catch (error) {
