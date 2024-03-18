@@ -12,8 +12,13 @@ app.use(express.json());
 app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: true }));
 
+
+//use routes
+app.use("/users", router);
+
+
 app.listen(config.port, () => {
   console.log("Server is running on port " + config.port);
-  console.log("http://localhost:" + config.port + "/api/");
+  console.log("http://localhost:" + config.port );
 });
 
