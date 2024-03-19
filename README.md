@@ -1,4 +1,3 @@
-
 # BarFinder360
 
 A brief description of what this project does and who it's for
@@ -15,7 +14,10 @@ A brief description of what this project does and who it's for
 
 🌟 Este proyecto representa un emocionante desafío técnico en el que contribuyo activamente, explorando nuevas formas de mejorar la experiencia del usuario y optimizar la gestión de los establecimientos de ocio.
 
+**Esta aplicación se está desarrollando utilizando microservicios y se implementa con Docker y Kubernetes, incluyendo el uso de minikube para entornos locales de Kubernetes.**
+
 ¡Estoy entusiasmado por seguir colaborando en este proyecto y contribuir al mundo de la tecnología de la hospitalidad!
+
 ## Installation
 
 Install BarFinder360 with npm
@@ -41,6 +43,8 @@ Install BarFinder360 with npm
 5. Inicia el servidor de desarrollo:
 
     npm run dev
+
+
 
 ```
     
