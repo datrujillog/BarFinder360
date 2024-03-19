@@ -13,75 +13,31 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-
 model Business {
   id              Int               @id @default(autoincrement())
   name            String
   lastName        String
-  email           String            //@unique
+  email           String            
   password        String
   phone           String
   NameBusiness    String
   BusinessType    String
-  state           stateBusiness         @default(ASSET)
-  User            User[]
-}
-
-
-model User {
-  id              Int               @id @default(autoincrement())
-  name            String
-  lastName        String
-  usuario         String   
-  DocumentType    DocumentType
-  TypePerson      TypePerson
-  email           String            //@unique
-  password        String
-  CountryCode     String
-  phone           String
-  state           EstadoUser         @default(ASSET)
-  Business        Business           @relation(fields: [BusinessId], references: [id])
-  BusinessId      Int                @unique
-  Role            Role               @relation(fields: [RoleId ], references: [id])
-  RoleId          Int                @unique
-  
 }
 
 model Role {
   id              Int               @id @default(autoincrement())
   name            String
-  User            User[]
+  description     String
+}
+
+model Accion {
+  id              Int               @id @default(autoincrement())
+  name            String
+  description     String
 }
 
 
-// ENUM
 
 
-enum EstadoUser {
-  ASSET
-  IDLE
-}
 
-enum stateBusiness {
-  ASSET
-  IDLE
-}
-
-enum DocumentType {
-  CEDULA_CIUDADANIA
-  NIT
-  PASAPORTE
-  REGISTRO_CIVIL
-  TARJETA_EXTRAJERA
-  CEDULA_EXTRANJERA
-  DOCUMENTO_IDENTIDAD_EXTRANJERO
-  PERMISO_ESPECIAL_PERMANENCIA
-  
-}
-
-enum TypePerson {
-  NATURAL
-  JURIDICA
-}
 
