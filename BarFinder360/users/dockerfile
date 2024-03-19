@@ -28,7 +28,7 @@ RUN npx prisma generate
 
 # Serve the app
 # CMD ["prisma","generate","npm", "run","start"]
-CMD ["npm", "run","dev"]
+CMD ["npm", "run","start"]
 
 
 # Docker
