@@ -5,29 +5,30 @@ FROM node
 WORKDIR /usr/src/app
 
 # Install app dependencies
-COPY package.json .
+COPY package.json ./
 
 RUN npm install
 
 # Bundle app source
 COPY ./src ./src
-COPY app.js .
+# COPY ./app.js .
 
 # Expose the port the app runs on
 EXPOSE 5001
 
 RUN npx prisma init
 
-COPY ./prisma ./prisma
+COPY prisma ./prisma
 
 COPY .env .
-
+# RUN npx prisma migrate dev --name init
 RUN npx prisma generate
 
+# RUN npx prisma migrate status
 
 # Serve the app
 # CMD ["prisma","generate","npm", "run","start"]
- CMD ["npm", "run","start"]
+CMD ["npm", "run","dev"]
 
 
 # Docker
