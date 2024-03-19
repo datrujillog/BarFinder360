@@ -24,13 +24,26 @@ services:
     depends_on:
       - postgres
 
-  adminer:
-    container_name: adminer
-    image: adminer
+  prisma-studio:
+    container_name: prisma-studio
+    build: .  
+    environment:
+      - PRISMA_CLIENT_ENGINE_TYPE=binary
     ports:
-      - '8080:8080'
+      - '5555:5555'
+    command: npx prisma studio
+    volumes:
+      - ./prisma:/app/prisma
     depends_on:
       - postgres
+
+  # adminer:
+  #   container_name: adminer
+  #   image: adminer
+  #   ports:
+  #     - '8080:8080'
+  #   depends_on:
+  #     - postgres
 
       
 # este comando es para correr el contenedor de docker con el init
