@@ -4,7 +4,9 @@ import morgan from "morgan";
 import  config  from "./configs/config.js";
 
 //importaciones rutas
-import router from "./routes/user.rourte.js";
+import User from "./routes/user.rourte.js";
+import Role from "./routes/rol.Router.js";
+import Business from "./routes/business.Router.js";
 
 const app = express();
 
@@ -14,7 +16,9 @@ app.use(express.urlencoded({ extended: true }));
 
 
 //use routes
-app.use("/users", router);
+User(app);
+Role(app);
+Business(app);
 
 
 app.listen(config.port, () => {
