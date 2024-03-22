@@ -15,7 +15,7 @@ services:
 
   users_barfinder360:
     container_name: users_barfinder360
-    restart: always
+    # restart: always
     build: .
     environment:
       - PORT=5001
