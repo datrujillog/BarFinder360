@@ -45,4 +45,6 @@ CMD ["npm", "run","start"]
 # docker-compose
 # docker-compose up --build
 
+# este codigo es para crear la imagen de docker y -t es para darle un nombre a la imagen
+# docker build . -t users-micro
 
