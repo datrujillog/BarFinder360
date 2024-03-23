@@ -4,8 +4,8 @@ import morgan from "morgan";
 import  config  from "./configs/config.js";
 
 //importaciones rutas
-import User from "./routes/user.rourte.js";
-import Role from "./routes/rol.Router.js";
+import User from "./routes/user.router.js";
+import Role from "./routes/rol.router.js";
 import Business from "./routes/business.Router.js";
 
 const app = express();
