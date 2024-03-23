@@ -53,6 +53,8 @@
 
 #Comando para ver los logs de un pod en tiempo real
     # kubectl logs -f users
+    # kubectl logs -f users --tail 20
+    # kubectl logs users -c users     # este comando es para ver los logs de un contenedor especifico
 
 #comando para ver la ip del pod
     # kubectl get pods -o wide
@@ -62,3 +64,32 @@
     
 #  iniciar un proxy a un servicio de api i 
     # kubectl port-forward users 5001:5001
+
+    # kubectl port-forward pods/users 5001:5001  # este comando es para hacer un port-forward a un pod especifico
+
+    # este comando es para hacer un port-forward a un pod especifico y un labes especifico
+    # kubectl port-forward pods -l app=users 5001:5001
+    # kubectl port-forward $(kubectl get pods -l v1=v2 -o jsonpath='{.items[0].metadata.name}') 5001:5001      # este comando es para hacer un port-forward a un pod especifico y un labes especifico
+
+
+########  Tiquetar un pods
+
+    # kubectl label pod users version=v1
+
+#  Ver los pods con una etiqueta
+    # kubectl get pods --show-labels
+
+#  Ver los pods con una etiqueta especifica
+    # kubectl get pods -l version=v1
+
+#  Borrar la etiqueta de un pod 
+    # kubectl label pod users version-
+
+#ver terminal de un pod de kubernetes 
+    #  kubectl exec -it users -c users -- bash
+
+# configurar el autoescalamiento de un pod
+    # kubectl autoscale deployment users --min=1 --max=10 --cpu-percent=80
+
+# ver el autoescalamiento de un pod
+    # kubectl get hpa
