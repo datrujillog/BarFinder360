@@ -1,0 +1,42 @@
+# Docker
+# docker build . -t users-barfinder360
+# Docker run users-barfinder360
+# docker run -d -p 5001:5001 --name users-barfinder360 users-barfinder360   // este comando es para correr el contenedor de docker
+
+# este comando es para correr el contenedor de docker con el init
+# docker run -p 5001:5001 --init --rm --name users-barfinder360 users-barfinder360 
+
+# docker-compose
+# docker-compose up --build
+
+# este codigo es para crear la imagen de docker y -t es para darle un nombre a la imagen
+# docker build . -t users-micro
+
+# kubectl apply -f users-micro-pod.yaml
+#kubectl get pods
+# kubectl describe pods users
+# kubectl delete pod users
+# minikube docker-env
+
+
+# Pasos para crear la imagen de docker y subirlo a kubernetes
+
+
+# 1  =  # utilizar el entorno de docker de minikube para crear la imagen
+         # minikube docker-env
+         #  RUN eL comando que te da el minikube docker-env
+
+# 2  = # crear la imagen de docker
+         # docker build . -t users-micro
+
+# 3  = # aplicar el archivo de configuracion de kubernetes
+            # kubectl apply -f users-micro-pod.yaml
+
+# 4  = # ver los pods 
+            # kubectl get pods
+
+# 5  = # ver la descripcion del pod
+            # kubectl describe pods users
+
+# 6  = # borrar el pod 
+            # kubectl delete pod users
