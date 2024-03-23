@@ -43,3 +43,22 @@
 
 # 6  = # borrar el pod 
             # kubectl delete pod users
+
+# abril el minikube dashboard
+    # minikube dashboard
+
+
+#Comando para ver los logs de un pod
+    # kubectl logs users
+
+#Comando para ver los logs de un pod en tiempo real
+    # kubectl logs -f users
+
+#comando para ver la ip del pod
+    # kubectl get pods -o wide
+
+#comando para ver los servicios
+    # kubectl get services
+    
+#  iniciar un proxy a un servicio de api i 
+    # kubectl port-forward users 5001:5001
