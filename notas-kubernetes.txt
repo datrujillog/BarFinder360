@@ -21,6 +21,9 @@
 
 # Pasos para crear la imagen de docker y subirlo a kubernetes
 
+#  Iniciar minikube
+    minikube start driver=docker
+
 
 # 1  =  # utilizar el entorno de docker de minikube para crear la imagen
          # minikube docker-env
