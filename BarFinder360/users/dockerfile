@@ -31,7 +31,7 @@ RUN npx prisma generate
  # este comando corre las migraciones y el servidor
 # CMD ["npm", "run","dev"]  
 # este comando corre el servidor
-CMD ["npm", "run","dev"]   
+CMD ["npm", "run","start"]   
 
 
 # Docker
