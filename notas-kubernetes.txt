@@ -63,7 +63,7 @@
     # kubectl get services
     
 #  iniciar un proxy a un servicio de api i 
-    # kubectl port-forward users 5001:5001
+   ##### kubectl port-forward users 5001:5001
 
     # kubectl port-forward pods/users 5001:5001  # este comando es para hacer un port-forward a un pod especifico
 
