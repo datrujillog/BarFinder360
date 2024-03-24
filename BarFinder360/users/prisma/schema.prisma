@@ -17,13 +17,15 @@ model Business {
   id              Int               @id @default(autoincrement())
   name            String
   lastName        String
+  code            String
   email           String            //@unique
   password        String
   phone           String
   NameBusiness    String
   BusinessType    String
   state           stateBusiness         @default(ASSET)
-  User            User[]
+  User            User?
+  Role            Role[]
 }
 
 
@@ -40,7 +42,7 @@ model User {
   phone           String
   state           EstadoUser         @default(ASSET)
   Business        Business           @relation(fields: [BusinessId], references: [id])
-  BusinessId      Int                
+  BusinessId      Int                @unique           
   Role            Role               @relation(fields: [RoleId ], references: [id])
   RoleId          Int                
   
@@ -50,6 +52,8 @@ model Role {
   id              Int               @id @default(autoincrement())
   name            String
   User            User[]
+  Business        Business?          @relation(fields: [BusinessId], references: [id])
+  BusinessId      Int?               
 }
 
 
