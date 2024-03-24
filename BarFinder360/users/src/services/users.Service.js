@@ -39,9 +39,7 @@ class UserService {
       });      
       return { success: true, results };
     } catch (error) {
-      if (error.code === "P2025") {
-        error.message = "User not found";
-      }
+      if (error.code === "P2025") error.message = "User not found";
       return { success: false, error };
     }
   }
