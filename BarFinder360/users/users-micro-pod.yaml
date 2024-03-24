@@ -1,15 +1,59 @@
 apiVersion: v1
 kind: Pod
-metadata:
+metadata: # Metadatos del pod (nombre, etiquetas, etc)
   name: users
 spec:
   containers:
-   - name: users
-     image: users-micro
-     ports:
-      - containerPort: 5001
-        name: http
-        protocol: TCP
-   
-
-
+    - name: postgres
+      image: postgres
+      imagePullPolicy: IfNotPresent               # Siempre que se haga un cambio en la imagen, se debe cambiar a Always - Never -IfNotPresent
+      env:                                        # Variables de entorno
+        - name: POSTGRES_USER                     # Nombre de la variable de entorno  
+          value: "postgres"                       # Valor de la variable de entorno
+        - name: POSTGRES_PASSWORD                
+          value: "12345"
+        - name: POSTGRES_DB
+          value: "barfinder360_Users"
+      resources:                                    # Recursos que se le asignan al contenedor
+        # requests:                                   # Recursos mínimos que necesita el contenedor
+        #   cpu: "250m"                               # 250 milicpus (0.25 CPUs)  es igual a 1/4 de CPU osea 1/4 de un núcleo    =  Un nucleo es 1000 milicpus
+        #   memory: "128Mi"                           # 128 Megabytes  1Mi = 1024Ki = 1048576 bytes  es la cantidad de memoria que necesita el contenedor para funcionar
+        limits:                                     # Recursos máximos que puede tener el contenedor
+          cpu: "500m"                               # 500 milicpus (0.5 CPUs)   es igual a 1/2 de CPU osea 1/2 de un núcleo medio    =  Un  nucleo es 1000 milicpus
+          memory: "1024Mi"                          # 1024 Megabytes  1Mi = 1024Ki = 1048576 bytes  es la cantidad de memoria que necesita el contenedor para funcionar
+      ports:                                        # Puertos que se exponen
+        - containerPort: 5432                                  
+          # name: postgres
+          protocol: TCP
+      # volumeMounts:
+      #   - mountPath: "/data"
+      #     name: "db-data"         
+    - name: users
+      image: users-micro
+      imagePullPolicy: Never                         # Siempre que se haga un cambio en la imagen, se debe cambiar a Always - Never -IfNotPresent
+      resources:                                     # Recursos que se le asignan al contenedor
+        requests:                                    # Recursos mínimos que necesita el contenedor
+          cpu: "500m"                                # 250 milicpus (0.25 CPUs)  es igual a 1/4 de CPU osea 1/4 de un núcleo    =  Un nucleo es 1000 milicpus
+          memory: "128Mi"                            # 128 Megabytes  1Mi = 1024Ki = 1048576 bytes  es la cantidad de memoria que necesita el contenedor para funcionar
+        limits:                                      # Recursos máximos que puede tener el contenedor
+          cpu: "1000m"                                # 500 milicpus (0.5 CPUs)   es igual a 1/2 de CPU osea 1/2 de un núcleo medio    =  Un  nucleo es 1000 milicpus
+          memory: "1024Mi"                           # 1024 Megabytes  1Mi = 1024Ki = 1048576 bytes  es la cantidad de memoria que necesita el contenedor para funcionar
+      ports:                                         # Puertos que se exponen
+        - containerPort: 5001
+          name: http
+          protocol: TCP
+      livenessProbe:
+        httpGet:
+          path: /health
+          port: 5001
+        initialDelaySeconds: 25                       # El tiempo que debe esperar antes de hacer la primera prueba
+        timeoutSeconds: 1                            # No debe durar la prueba más de un segundo
+        periodSeconds: 10                            # El periodo de tiempo
+        failureThreshold: 3                          # El número de veces que puede fallar la prueba antes de reiniciar el contenedor
+  # volumenes:
+  #   - name: users
+  #     hostPath:
+  #       path: /data/microservisios/users
+  #       # type: DirectoryOrCreate
+    
+      

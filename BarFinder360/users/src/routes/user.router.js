@@ -27,7 +27,7 @@ function userRouter(app) {
     const body = req.body;
     const response = await userServ.getAllUsers(body);
     if (!response.success)
-      return res.status(404).json({ error: results.error });
+      return res.status(404).json({ error: response.error });
     response.success
       ? res.status(200).json({ users: response.results })
       : errorResponse(res, response.error);

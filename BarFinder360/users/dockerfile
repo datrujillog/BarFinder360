@@ -10,7 +10,7 @@ COPY package.json ./
 RUN npm install
 
 # Bundle app source
-COPY ./src ./src
+COPY ./src ./src/
 # COPY ./app.js .
 
 # Expose the port the app runs on
@@ -18,7 +18,7 @@ EXPOSE 5001
 
 RUN npx prisma init
 
-COPY prisma ./prisma
+COPY prisma ./prisma/
 
 COPY .env .
 # RUN npx prisma migrate dev --name init
@@ -47,4 +47,39 @@ CMD ["npm", "run","start"]
 
 # este codigo es para crear la imagen de docker y -t es para darle un nombre a la imagen
 # docker build . -t users-micro
+
+# kubectl apply -f users-micro-pod.yaml
+#kubectl get pods
+# kubectl describe pods users
+# kubectl delete pod users
+# minikube docker-env
+
+
+# Pasos para crear la imagen de docker y subirlo a kubernetes
+
+
+# 1  =  # utilizar el entorno de docker de minikube para crear la imagen
+         # minikube docker-env
+         #  RUN eL comando que te da el minikube docker-env
+
+# 2  = # crear la imagen de docker
+         # docker build . -t users-micro
+
+# 3  = # aplicar el archivo de configuracion de kubernetes
+            # kubectl apply -f users-micro-pod.yaml
+
+# 4  = # ver los pods 
+            # kubectl get pods
+
+# 5  = # ver la descripcion del pod
+            # kubectl describe pods users
+
+# 6  = # borrar el pod 
+            # kubectl delete pod users
+
+
+
+# npx prisma migrate dev --name initial --create-only --preview-feature
+
+# "npx prisma migrate dev --name initial --create-only && npx prisma migrate deploy && npx prisma generate && node ./src/app.js",
 
