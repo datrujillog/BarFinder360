@@ -37,6 +37,24 @@ class BusinessService {
       return { success: false, error };
     }
   }
+
+  async getBusinessById(id) {
+    try {
+      const results = await this.#client.business.findUnique({
+        where: {
+          id: parseInt(id),
+        },
+      }); 
+      if (!results) {
+        const err = new Error("Business not found");
+        err.code = 404;
+        throw err;
+      }
+      return { success: true, results };
+    } catch (error) {
+      return { success: false, error };
+    }
+  }
 }
 
 export default BusinessService;
