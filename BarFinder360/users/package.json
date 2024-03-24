@@ -6,9 +6,9 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "migrate": "node ./src/app.js",
+    "migrate": "npx prisma migrate deploy && npx prisma generate && node ./src/app.js",
     "dev": "npx prisma migrate dev --name initial && node ./src/app.js",
-    "start": "npx prisma migrate dev --name initial --create-only && npx prisma migrate deploy && npx prisma generate && node ./src/app.js"
+    "start": "nodemon ./src/app.js"
   },
   "author": "",
   "license": "ISC",
