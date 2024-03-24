@@ -31,12 +31,12 @@ model User {
   id              Int               @id @default(autoincrement())
   name            String
   lastName        String
-  usuario         String   
-  DocumentType    DocumentType
-  TypePerson      TypePerson
+  usuario         String?   
+  DocumentType    DocumentType?     @default(CEDULA_CIUDADANIA)
+  TypePerson      TypePerson?       @default(NATURAL)
   email           String            //@unique
   password        String
-  CountryCode     String
+  CountryCode     String?
   phone           String
   state           EstadoUser         @default(ASSET)
   Business        Business           @relation(fields: [BusinessId], references: [id])
