@@ -79,6 +79,7 @@ CMD ["npm", "run","start"]
 
 
 
+# npx prisma migrate dev --name initial --create-only --preview-feature
 
-
+# "npx prisma migrate dev --name initial --create-only && npx prisma migrate deploy && npx prisma generate && node ./src/app.js",
 
