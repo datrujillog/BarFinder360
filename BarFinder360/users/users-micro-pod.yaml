@@ -25,6 +25,9 @@ spec:
         - containerPort: 5432                                  
           # name: postgres
           protocol: TCP
+      # volumeMounts:
+      #   - mountPath: "/data"
+      #     name: "db-data"         
     - name: users
       image: users-micro
       imagePullPolicy: Never                         # Siempre que se haga un cambio en la imagen, se debe cambiar a Always - Never -IfNotPresent
@@ -43,7 +46,14 @@ spec:
         httpGet:
           path: /health
           port: 5001
-        initialDelaySeconds: 5                       # El tiempo que debe esperar antes de hacer la primera prueba
+        initialDelaySeconds: 25                       # El tiempo que debe esperar antes de hacer la primera prueba
         timeoutSeconds: 1                            # No debe durar la prueba más de un segundo
         periodSeconds: 10                            # El periodo de tiempo
         failureThreshold: 3                          # El número de veces que puede fallar la prueba antes de reiniciar el contenedor
+  # volumenes:
+  #   - name: users
+  #     hostPath:
+  #       path: /data/microservisios/users
+  #       # type: DirectoryOrCreate
+    
+      
