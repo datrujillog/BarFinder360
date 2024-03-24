@@ -1,23 +1,47 @@
 import { PrismaClient } from "@prisma/client";
 import jwt from "jsonwebtoken";
 
+import BusinessService from "./business.Service.js";
+
 import config from "../configs/config.js";
+
 
 class UserService {
   #client;
+  #businessServ;
   constructor() {
     this.#client = new PrismaClient();
+    this.#businessServ = new BusinessService();
   }
 
   async createUser(body) {
     try {
+
+      // const businessGet = await this.#businessServ.getBusinessById(body.BusinessId);
+      // if (!businessGet.success) throw new Error("Business not found");
+      
+    //! para crear al usuario se necesita el id del negocio al que pertenece el id de negocio se obtiene de la request
+ 
       const results = await this.#client.user.create({
         data: {
           ...body,
+          Business: {
+            connect: {
+              id: parseInt(body.Business.connect.id),
+            },
+          },
+          Role:{
+            connect:{
+              id: parseInt(body.Role.connect.id),
+            }
+          }
         },
       });      
       return { success: true, results };
     } catch (error) {
+      if (error.code === "P2025") {
+        error.message = "User not found";
+      }
       return { success: false, error };
     }
   }
