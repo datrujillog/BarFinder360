@@ -4,24 +4,30 @@ import jwt from "jsonwebtoken";
 import BusinessService from "./business.Service.js";
 
 import config from "../configs/config.js";
-
+import RoleService from "./rol.Service.js";
 
 class UserService {
   #client;
   #businessServ;
+  #roleServ;
   constructor() {
     this.#client = new PrismaClient();
     this.#businessServ = new BusinessService();
+    this.#roleServ = new RoleService();
   }
 
   async createUser(body) {
     try {
+      const BusinessId = body.Business.connect.id;
 
-      // const businessGet = await this.#businessServ.getBusinessById(body.BusinessId);
-      // if (!businessGet.success) throw new Error("Business not found");
-      
-    //! para crear al usuario se necesita el id del negocio al que pertenece el id de negocio se obtiene de la request
- 
+      const userRo = await this.isUserAdmin(body.Role.connect.id);
+      if (!userRo.success) throw new Error("Only admins can create users");
+
+      const businessGet = await this.#businessServ.getBusinessById(BusinessId);
+      if (!businessGet.success) throw new Error("Business not found");
+
+      //! para crear al usuario se necesita el id del negocio al que pertenece el id de negocio se obtiene de la request
+
       const results = await this.#client.user.create({
         data: {
           ...body,
@@ -30,13 +36,13 @@ class UserService {
               id: parseInt(body.Business.connect.id),
             },
           },
-          Role:{
-            connect:{
+          Role: {
+            connect: {
               id: parseInt(body.Role.connect.id),
-            }
-          }
+            },
+          },
         },
-      });      
+      });
       return { success: true, results };
     } catch (error) {
       if (error.code === "P2025") error.message = "User not found";
@@ -44,7 +50,6 @@ class UserService {
     }
   }
 
-  
   async getAllUsers() {
     try {
       const results = await this.#client.user.findMany();
@@ -107,7 +112,7 @@ class UserService {
       if (!userVerifique.success) throw new Error("User not found");
 
       // const userToken = await this.#tokenVerify(token);
-      // if (userToken.results.id !== parseInt(userId)) throw new Error("You are not authorized to update this user");   
+      // if (userToken.results.id !== parseInt(userId)) throw new Error("You are not authorized to update this user");
 
       const results = await this.#client.user.update({
         where: {
@@ -136,7 +141,7 @@ class UserService {
       if (!userVerifique.success) throw new Error("User not found");
 
       // const userToken = await this.#tokenVerify(token);
-      // if (userToken.results.id !== parseInt(userId)) throw new Error("You are not authorized to update this user");   
+      // if (userToken.results.id !== parseInt(userId)) throw new Error("You are not authorized to update this user");
 
       const results = await this.#client.user.delete({
         where: {
@@ -152,6 +157,16 @@ class UserService {
       };
     } catch (error) {
       return { success: false, error };
+    }
+  }
+
+  async isUserAdmin(user) {
+    //hacer una consulta a la tabla roles para verificar si el usuario es admin
+    //! FALTA VERIFICAR QUE EL ROLE SEA ADMIN Y QUE TENGA EL MISMO BUSINESSID DE LA REQUEST
+    const userRole = await this.#roleServ.getRoleById(user);
+    if (!userRole.success) throw new Error("Role not found");
+    if (userRole.results.name === "ADMIN") {
+      return { success: true }; 
     }
   }
 }
