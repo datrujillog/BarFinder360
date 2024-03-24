@@ -40,9 +40,9 @@ model User {
   phone           String
   state           EstadoUser         @default(ASSET)
   Business        Business           @relation(fields: [BusinessId], references: [id])
-  BusinessId      Int                @unique
+  BusinessId      Int                
   Role            Role               @relation(fields: [RoleId ], references: [id])
-  RoleId          Int                @unique
+  RoleId          Int                
   
 }
 
