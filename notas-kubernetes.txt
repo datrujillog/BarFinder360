@@ -115,7 +115,7 @@
             # kubectl delete deployment users
 
     # ver los replicasets
-            # kubectl get replicasets
+            # kubectl get replicasets 
 
     # ver las peticiones de recurs
               # kubectl get pods -o wide
