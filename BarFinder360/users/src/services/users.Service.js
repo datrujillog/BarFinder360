@@ -2,10 +2,12 @@ import { PrismaClient } from "@prisma/client";
 import jwt from "jsonwebtoken";
 
 import BusinessService from "./business.Service.js";
-
-import config from "../configs/config.js";
 import RoleService from "./rol.Service.js";
 
+import config from "../configs/config.js";
+import isUserAdmin from "../helpers/isUserAdmin.js";
+
+isUserAdmin;
 class UserService {
   #client;
   #businessServ;
@@ -18,16 +20,16 @@ class UserService {
 
   async createUser(body) {
     try {
+      //!se supone que este BusinessId de negocio se obtiene de la request
       const BusinessId = body.Business.connect.id;
 
-      const userRo = await this.isUserAdmin(body.Role.connect.id);
-      if (!userRo.success) throw new Error("Only admins can create users");
+      // const userRo = await isUserAdmin(body.Role.connect.id);
+      // if (!userRo.success) throw new Error("Only admins can create users");
 
       const businessGet = await this.#businessServ.getBusinessById(BusinessId);
       if (!businessGet.success) throw new Error("Business not found");
 
       //! para crear al usuario se necesita el id del negocio al que pertenece el id de negocio se obtiene de la request
-
       const results = await this.#client.user.create({
         data: {
           ...body,
@@ -160,15 +162,28 @@ class UserService {
     }
   }
 
-  async isUserAdmin(user) {
-    //hacer una consulta a la tabla roles para verificar si el usuario es admin
-    //! FALTA VERIFICAR QUE EL ROLE SEA ADMIN Y QUE TENGA EL MISMO BUSINESSID DE LA REQUEST
-    const userRole = await this.#roleServ.getRoleById(user);
-    if (!userRole.success) throw new Error("Role not found");
-    if (userRole.results.name === "ADMIN") {
-      return { success: true }; 
-    }
-  }
+  // async isUserAdmin(user) {
+  //   //hacer una consulta a la tabla roles para verificar si el usuario es admin
+  //   //! FALTA VERIFICAR QUE EL ROLE SEA ADMIN Y QUE TENGA EL MISMO BUSINESSID DE LA REQUEST
+  //   const userRole = await this.#roleServ.getRoleById(user);
+  //   if (!userRole.success) throw new Error("Role not found");
+
+  //   if (userRole.results.name === "ADMIN") {
+  //     if (
+  //       userRole.results.BusinessId ===
+  //       "Debe ser igual a el id de BusinessId de la reques"
+  //     ) {
+  //       return { success: true };
+  //     } else {
+  //       throw new Error("You are not authorized to create users");
+  //     }
+
+  //   }
+
+  //   // if (userRole.results.BusinessId === "Debe ser igual a el id de BusinessId de la reques") return { success: true };
+
+  //   return { success: false };
+  // }
 }
 
 export default UserService;
