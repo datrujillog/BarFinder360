@@ -111,6 +111,9 @@
     # ver los describe   del deployment
             # kubectl describe deployments users
 
+    # Eliminar  el deployment
+            # kubectl delete deployment users
+
     # ver los replicasets
             # kubectl get replicasets
 
