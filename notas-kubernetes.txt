@@ -99,7 +99,7 @@
 
     #####################  CREAR  UN DEPLOYMENT Y SERVIC IO DE KUBERNETES ####################
 
-    # crear deplyment 
+    # crear deployment 
         # kubectl create -f users-micro-deployment.yaml
 
     # creamos nuestro archivo en formato json o yaml, por ejemplo us.
@@ -119,3 +119,14 @@
 
     # ver las peticiones de recurs
               # kubectl get pods -o wide
+
+   # ver los labels 
+        # kubectl get pods --show-labels
+
+    # escalar los deplymest pods
+        # kubectl scale deployment users --replicas=3
+
+    # ver los servicios
+        # kubectl get services
+
+   
