@@ -77,7 +77,10 @@ class UserService {
         where: {
           id: parseInt(id),
         },
-        
+        include: {
+          Business: true,
+          Role: true,
+        },
       });
       if (!results) {
         const err = new Error("User not found");
