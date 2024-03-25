@@ -19,7 +19,7 @@
 # minikube docker-env
 
 
-# Pasos para crear la imagen de docker y subirlo a kubernetes
+#################### Pasos para crear la imagen de docker y subirlo a kubernetes
 
 #  Iniciar minikube
     minikube start driver=docker
@@ -93,3 +93,20 @@
 
 # ver el autoescalamiento de un pod
     # kubectl get hpa
+
+
+
+
+    #####################  CREAR  UN DEPLOYMENT Y SERVIC IO DE KUBERNETES ####################
+
+    # crear deplyment 
+        # kubectl create -f users-micro-deployment.yaml
+
+    # creamos nuestro archivo en formato json o yaml, por ejemplo us.
+          # kubectl apply -f users-micro-deployment.yaml
+
+    # ver los deployments
+            # kubectl get deployments
+
+    # ver los describe   del deployment
+            # kubectl describe deployments users
