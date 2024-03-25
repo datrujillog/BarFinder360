@@ -119,6 +119,8 @@
 
     # ver las peticiones de recurs
               # kubectl get pods -o wide
+              
+              # kubectl get services -o wide
 
    # ver los labels 
         # kubectl get pods --show-labels
@@ -128,5 +130,11 @@
 
     # ver los servicios
         # kubectl get services
+
+    # expose  el servicio para que pueda ser accedido desde afuera
+        # kubectl expose deployment users
+
+        # kubectl expose deployment users --type="LoadBalancer" --port 8      
+
 
    
