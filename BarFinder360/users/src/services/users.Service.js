@@ -25,9 +25,6 @@ class UserService {
       //!se supone que este BusinessId de negocio se obtiene de la request
       const BusinessId = body.Business.connect.id;
 
-      // const userRo = await isUserAdmin(body.Role.connect.id);
-      // if (!userRo.success) throw new Error("Only admins can create users");
-
       const businessGet = await this.#businessServ.getBusinessById(BusinessId);
       if (!businessGet.success) throw new Error("Business not found");
 
