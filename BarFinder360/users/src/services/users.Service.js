@@ -56,7 +56,14 @@ class UserService {
 
   async getAllUsers() {
     try {
-      const results = await this.#client.user.findMany();
+      const results = await this.#client.user.findMany({
+       include: {
+          Business: true,
+          Role: true,
+        },
+      });     
+        
+      
       const count = await this.#client.user.count();
       return { success: true, count, results };
     } catch (error) {
@@ -70,6 +77,7 @@ class UserService {
         where: {
           id: parseInt(id),
         },
+        
       });
       if (!results) {
         const err = new Error("User not found");
