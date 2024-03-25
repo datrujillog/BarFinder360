@@ -8,11 +8,13 @@ spec:
   selector:
     matchLabels:
       micro: users
-  replicas: 1
+  replicas: 3
   template:
     # Definicion del PD
     metadata:
       name: users
+      labels:
+        micro: users
     spec:
       containers:
         - name: postgres
