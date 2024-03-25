@@ -136,5 +136,10 @@
 
         # kubectl expose deployment users --type="LoadBalancer" --port 8      
 
+    # delete  el servicio 
+        # kubectl delete service users
+
+    
+
 
    
