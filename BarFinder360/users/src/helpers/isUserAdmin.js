@@ -3,7 +3,7 @@ import RoleService from "../services/rol.Service.js";
 
 const roleServ = new RoleService();
 
-
+//! modificar la logica de la funcion
 async function isUserAdmin(user) {
     try {
         const userRole = await roleServ.getRoleById(user)  ;
