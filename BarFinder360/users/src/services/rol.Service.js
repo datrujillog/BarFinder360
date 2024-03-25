@@ -24,7 +24,7 @@ class RoleService {
       });
       return { success: true, results };
     } catch (error) {
-      return { success: false, error };
+      return { success: false, error }; 
     }
   }
 
