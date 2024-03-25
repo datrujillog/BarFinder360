@@ -18,6 +18,8 @@ class UserService {
     this.#roleServ = new RoleService();
   }
 
+
+  //! falta validar que exsta el rol
   async createUser(body) {
     try {
       //!se supone que este BusinessId de negocio se obtiene de la request
