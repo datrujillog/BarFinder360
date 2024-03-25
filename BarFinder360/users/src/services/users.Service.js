@@ -174,29 +174,6 @@ class UserService {
       return { success: false, error };
     }
   }
-
-  // async isUserAdmin(user) {
-  //   //hacer una consulta a la tabla roles para verificar si el usuario es admin
-  //   //! FALTA VERIFICAR QUE EL ROLE SEA ADMIN Y QUE TENGA EL MISMO BUSINESSID DE LA REQUEST
-  //   const userRole = await this.#roleServ.getRoleById(user);
-  //   if (!userRole.success) throw new Error("Role not found");
-
-  //   if (userRole.results.name === "ADMIN") {
-  //     if (
-  //       userRole.results.BusinessId ===
-  //       "Debe ser igual a el id de BusinessId de la reques"
-  //     ) {
-  //       return { success: true };
-  //     } else {
-  //       throw new Error("You are not authorized to create users");
-  //     }
-
-  //   }
-
-  //   // if (userRole.results.BusinessId === "Debe ser igual a el id de BusinessId de la reques") return { success: true };
-
-  //   return { success: false };
-  // }
 }
 
 export default UserService;
