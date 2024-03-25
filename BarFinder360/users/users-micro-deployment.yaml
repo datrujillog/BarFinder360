@@ -8,4 +8,61 @@ spec:
   selector:
     matchLabels:
       micro: users
-      replicas: {{ .Values.replicas | default 3 }}
+  replicas: 1
+  template:
+    # Definicion del PD
+    metadata:
+      name: users
+    spec:
+      containers:
+        - name: postgres
+          image: postgres
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: POSTGRES_PASSWORD
+              value: "12345"
+            - name: POSTGRES_DB
+              value: "barfinder360_Users"
+          resources:
+            # requests:
+            #   cpu: "250m"
+            #   memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "1024Mi"
+          ports:
+            - containerPort: 5432
+              # name: postgres
+              protocol: TCP
+          # volumeMounts:
+          #   - mountPath: "/data"
+          #     name: "db-data"
+        - name: users
+          image: users-micro
+          imagePullPolicy: Never
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "128Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1024Mi"
+          ports:
+            - containerPort: 5001
+              name: http
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 5001
+            initialDelaySeconds: 25
+            timeoutSeconds: 1
+            periodSeconds: 10
+            failureThreshold: 3
+      # volumenes:
+      #   - name: users
+      #     hostPath:
+      #       path: /data/microservisios/users
+      #       # type: DirectoryOrCreate
+      #   db-data:
+      #     emptyDir: {}
