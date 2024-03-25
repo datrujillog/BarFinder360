@@ -110,3 +110,9 @@
 
     # ver los describe   del deployment
             # kubectl describe deployments users
+
+    # ver los replicasets
+            # kubectl get replicasets
+
+    # ver las peticiones de recurs
+              # kubectl get pods -o wide
