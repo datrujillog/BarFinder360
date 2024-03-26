@@ -150,5 +150,7 @@
     # Editar  y actualizar un recurso
         # kubectl edit deployment users
 
+        # kubectl edit service users
+
 
    
