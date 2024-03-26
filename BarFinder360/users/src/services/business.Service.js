@@ -64,6 +64,22 @@ class BusinessService {
       return { success: false, error };
     }
   }
+
+  
+  async userBusiness(businessId) {
+    try {
+      const results = await this.#client.user.findMany({
+        where: {
+          BusinessId: parseInt(businessId),
+        },
+      });
+      return { success: true, results };
+    } catch (error) {
+      return { success: false, error };
+    }
+  }
+
+  
 }
 
 export default BusinessService;
