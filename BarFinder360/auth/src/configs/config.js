@@ -7,8 +7,8 @@ import 'dotenv/config'
 
 
  const config = {
-    jwtSecret: process.env.JW_SECRET,
-    port: process.env.PORT  || 5001,
+    jwtSecret: process.env.JW_SECRET || 'secret',
+    port: process.env.PORT  || 5000,
     usersUrl: process.env.USERS_URL || 'http://localhost:5000',
    
  };
