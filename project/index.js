@@ -2,7 +2,7 @@ import express from "express";
 import morgan from "morgan";
 import cookie from "cookie-parser";
 
-import config from "./config/config.js";
+import config from "./configs/config.js";
 
 
 //importar las rutas 
