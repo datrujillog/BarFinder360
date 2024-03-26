@@ -1,6 +1,6 @@
 import express, { response } from "express";
 import AuthService from "../services/auth.Service.js";
-import { errorResponse, authResponse, Responsee } from "../helpers/response.js";
+import { errorResponse, authResponse} from "../helpers/response.js";
 // import { asyncHandler } from "../helpers/utils.js";
 import { valitorUserSignup } from "../middleware/express-validator.js";
 // import auth from "../middleware/auth.js";
@@ -32,7 +32,7 @@ function authRouter(app) {
 
   });
 
-  router.post("/signup", valitorUserSignup, async (req, res, next) => {
+  router.post("/signup",async (req, res, next) => {
     const body = req.body;
     const response = await authServ.signup(body);
 
@@ -43,7 +43,7 @@ function authRouter(app) {
         secure: false,
       }) &&
       authResponse(res, 201, true, "signup successful", {
-        payload: response.user,
+        payload: response.user.data.user,
         token: response.token,
       })
       : errorResponse(res, response.error);
