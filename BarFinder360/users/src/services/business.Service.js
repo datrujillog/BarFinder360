@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import axios from "axios";
 import RoleService from "./rol.Service.js";
 import randomCode from "../helpers/randomCode.js";
 
@@ -14,6 +15,13 @@ class BusinessService {
 // ! se crea desde el micdroservisi de auth con signup
   async createBusiness(body) {
     try {
+      //recivir la data de la api de auth para crear el negocio
+      // const { data} = axios.get("http://localhost:5000/api/auth/signup");
+
+      // console.log(data); 
+
+
+
       const role = await this.#roleServ.createRole({ name: "ADMIN" });
       const defailRole = role.results.id;
       const randon = await randomCode();
