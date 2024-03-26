@@ -111,6 +111,8 @@
     # ver los describe   del deployment
             # kubectl describe deployments users
 
+            # kubectl describe service users
+
     # Eliminar  el deployment
             # kubectl delete deployment users
 
@@ -139,7 +141,11 @@
     # delete  el servicio 
         # kubectl delete service users
 
-    
+    # update recurso de deployment service
+        # kubectl apply -f users-micro-deployment.yaml
+
+    # rutas disponibles  en la app
+        # kubectl get endpoints user --watch
 
 
    
