@@ -147,5 +147,8 @@
     # rutas disponibles  en la app
         # kubectl get endpoints user --watch
 
+    # Editar  y actualizar un recurso
+        # kubectl edit deployment users
+
 
    
