@@ -7,7 +7,7 @@ const startServer = async () => {
         console.log("")
         console.log(`Server is running on port ${config.port} `);
         console.log("")
-        console.log(`http://localhost:${config.port}`);
+        console.log(`http://localhost:${config.port} En el microservicio de autenticación   LOCAL`);
     });
 }
 
