@@ -5,6 +5,7 @@ import morgan from "morgan";
 const app = express();
 
 //importar las rutas
+import Auth from "./routes/auth.Router.js";
 
 
 
@@ -15,6 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 // app.use(cookie());
 
 //utilizar rutas
+Auth(app);
 
 
 app.get("/", (req, res) => {
