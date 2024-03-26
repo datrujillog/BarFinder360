@@ -3,15 +3,15 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
 import UserService from "./userService.js";
-import config from "../config/config.js";
+import config from "../configs/config.js";
 
 // import client from "../helpers/connection.js";
 
 
 
 class AuthService {
-  #client;  
-  #userService ;
+  #client;
+  #userService;
   constructor() {
     // this.#prisma = client;
     this.#client = new PrismaClient();
@@ -43,9 +43,26 @@ class AuthService {
       }
       const user = await this.#client.user.create({ data });
       const token = await this.crearToken(user);
-      return { success: true, user, token};
+      return { success: true, user, token };
     } catch (error) {
       return { success: false, error };
+    }
+  }
+
+  validate(token) {
+    try { 
+        const data = jwt.verify(token, config.jwtSecret);
+        return {
+            success: true,
+            data: data.results
+        };
+
+    } catch ({message}) {
+      return{
+        success: false,
+        message
+      }
+
     }
   }
 
