@@ -10,6 +10,8 @@ class BusinessService {
     this.#roleServ = new RoleService();
   }
 
+  
+// ! se crea desde el micdroservisi de auth con signup
   async createBusiness(body) {
     try {
       const role = await this.#roleServ.createRole({ name: "ADMIN" });
