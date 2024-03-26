@@ -46,13 +46,8 @@ class AuthService {
       if (data.password) {
         data.password = await this.#encrypt(data.password);
       }
-      // const user = await this.#client.user.create({ data });
-      const user = await axios.post("http://localhost:5001/api/users/business/create", data);
-
-
-
-      
-      const token = await this.crearToken(user.data.user);
+      const user = await axios.post("http://localhost:5001/users/business/create", data);      
+      const token = await this.crearToken(user);
       return { success: true, user, token };
     } catch (error) {
       return { success: false, error };
