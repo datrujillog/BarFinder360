@@ -1,6 +1,6 @@
 
 
-import { PrismaClient } from "@prisma/client";
+// import { PrismaClient } from "@prisma/client";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import axios from "axios";
@@ -13,10 +13,10 @@ import config from "../configs/config.js";
 
 
 class AuthService {
-  #client;
+  // #client;
   constructor() {
     // this.#prisma = client;
-    this.#client = new PrismaClient();
+    // this.#client = new PrismaClient();
   }
 
   async login(data) {
@@ -25,16 +25,13 @@ class AuthService {
       // const results = await this.#userService.getByEmail(email);
 
       //! configuracio de axios para hacer al microservicio de users
-      // const results = await axios.get(`${config.usersUrl}/users/email/${email}`)
-      //   .then((res) => res.data
-      //   )
-      //   .catch((error) => {
-      //     console.error(error);
-      //   });
+     //hacer una peticion axios get para enviar el email y password a la ruta de login
+      // const results = await axios.get(`http://localhost:5001/users/login/${email}/${password}`);
+      // console.log(results.data);
 
-      if (!results.success) {
-        throw results.error;
-      }
+      // if (!results.success) {
+      //   throw results.error;
+      // }
       await this.#compare(password, results.results.password);
       const token = await this.crearToken(results);
       const user = results.results;
@@ -49,8 +46,13 @@ class AuthService {
       if (data.password) {
         data.password = await this.#encrypt(data.password);
       }
-      const user = await this.#client.user.create({ data });
-      const token = await this.crearToken(user);
+      // const user = await this.#client.user.create({ data });
+      const user = await axios.post("http://localhost:5001/api/users/business/create", data);
+
+
+
+      
+      const token = await this.crearToken(user.data.user);
       return { success: true, user, token };
     } catch (error) {
       return { success: false, error };
