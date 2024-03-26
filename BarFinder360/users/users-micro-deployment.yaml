@@ -59,8 +59,17 @@ spec:
               port: 5001
             initialDelaySeconds: 25
             timeoutSeconds: 1
-            periodSeconds: 10
+            periodSeconds: 15
             failureThreshold: 3
+          readinessProbe:    # ES PARA SABER SI EL CONTENEDOR ESTA LISTO PARA RECIBIR TRAFICO
+            httpGet:
+              path: /health
+              port: 5001
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
+            periodSeconds: 2
+            failureThreshold: 3
+
       # volumenes:
       #   - name: users
       #     hostPath:
