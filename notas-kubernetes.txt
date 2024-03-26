@@ -69,6 +69,7 @@
 
     # este comando es para hacer un port-forward a un pod especifico y un labes especifico
     # kubectl port-forward pods -l app=users 5001:5001
+    # kubectl port-forward pods/users-7fbf6cf55b-dwcwm 5001:5001
     # kubectl port-forward $(kubectl get pods -l v1=v2 -o jsonpath='{.items[0].metadata.name}') 5001:5001      # este comando es para hacer un port-forward a un pod especifico y un labes especifico
 
 
