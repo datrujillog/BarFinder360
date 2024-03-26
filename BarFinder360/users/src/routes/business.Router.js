@@ -13,7 +13,7 @@ function businessRouter(app) {
 
   app.use("/api/users/business", router);
   
-
+// ! se crea desde el micdroservisi de auth con signup
   router.post("/create", async (req, res, next) => {
     const body = req.body;
     const response = await businessServ.createBusiness(body);
