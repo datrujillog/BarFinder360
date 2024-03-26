@@ -11,17 +11,10 @@ class BusinessService {
     this.#roleServ = new RoleService();
   }
 
-  
-// ! se crea desde el micdroservisi de auth con signup
+
+  // ! se crea desde el micdroservisi de auth con signup
   async createBusiness(body) {
     try {
-      //recivir la data de la api de auth para crear el negocio
-      // const { data} = axios.get("http://localhost:5000/api/auth/signup");
-
-      // console.log(data); 
-
-
-
       const role = await this.#roleServ.createRole({ name: "ADMIN" });
       const defailRole = role.results.id;
       const randon = await randomCode();
@@ -65,7 +58,7 @@ class BusinessService {
     }
   }
 
-  
+
   async userBusiness(businessId) {
     try {
       const results = await this.#client.user.findMany({
@@ -79,7 +72,7 @@ class BusinessService {
     }
   }
 
-  
+
 }
 
 export default BusinessService;
