@@ -1,9 +1,9 @@
 import express, { response } from "express";
 import AuthService from "../services/authService.js";
 import { errorResponse, authResponse, Responsee } from "../helpers/response.js";
-import { asyncHandler } from "../helpers/utils.js";
+// import { asyncHandler } from "../helpers/utils.js";
 import { valitorUserSignup } from "../middleware/express-validator.js";
-import auth from "../middleware/auth.js";
+// import auth from "../middleware/auth.js";
 // import { checkPermission } from "../middleware/checkPermission.js";
 
 function authRouter(app) {
@@ -20,16 +20,16 @@ function authRouter(app) {
 
     response.success
       ? res.cookie("token", response.token, {
-          httpOnly: true,
-          expires: new Date(Date.now() + 1000 * 60 * 60 * 24), // 1 day
-          secure: false,
-        }) &&
-        authResponse(res, 201, true, "signup successful", {
-          payload: response.user,
-          token: response.token,
-        })
+        httpOnly: true,
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 24), // 1 day
+        secure: false,
+      }) &&
+      authResponse(res, 201, true, "signup successful", {
+        payload: response.user,
+        token: response.token,
+      })
       : errorResponse(res, response.error);
-  
+
   });
 
   router.post("/signup", valitorUserSignup, async (req, res, next) => {
@@ -38,31 +38,30 @@ function authRouter(app) {
 
     response.success
       ? res.cookie("token", response.token, {
-          httpOnly: true,
-          expires: new Date(Date.now() + 1000 * 60 * 60 * 24), // 1 day
-          secure: false,
-        }) &&
-        authResponse(res, 201, true, "signup successful", {
-          payload: response.user,
-          token: response.token,
-        })
+        httpOnly: true,
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 24), // 1 day
+        secure: false,
+      }) &&
+      authResponse(res, 201, true, "signup successful", {
+        payload: response.user,
+        token: response.token,
+      })
       : errorResponse(res, response.error);
   });
 
-  //   if (response.success) {
-  //     res.cookie("token", response.token, {
-  //       httpOnly: true,
-  //       expires: new Date(Date.now() + 1000 * 60 * 60 * 24), // 1 day
-  //       secure: false,
-  //     });
-  //     authResponse(res, 201, true, "login successful", {
-  //       payload: response.user,
-  //       token: response.token,
-  //     });
-  //   } else {
-  //     errorResponse(res, response.error);
-  //   }
-  // });
+  router.post("/validate", (req, res, next) => {
+    // const token = req.cookies.token;
+    const { token } = req.body;
+    const response = authServi.validate(token);
+
+    response.success
+      ? authResponse(res, 201, true, "token is valid",{
+        payload: response.data,
+        token: token
+      })
+      : errorResponse(res, response.message);
+
+  });
 
   return router;
 }
