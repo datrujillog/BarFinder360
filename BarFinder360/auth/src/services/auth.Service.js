@@ -5,7 +5,6 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import axios from "axios";
 
-import UserService from "./userService.js";
 import config from "../configs/config.js";
 
 
@@ -15,11 +14,9 @@ import config from "../configs/config.js";
 
 class AuthService {
   #client;
-  #userService;
   constructor() {
     // this.#prisma = client;
     this.#client = new PrismaClient();
-    this.#userService = new UserService();
   }
 
   async login(data) {
@@ -28,12 +25,12 @@ class AuthService {
       // const results = await this.#userService.getByEmail(email);
 
       //! configuracio de axios para hacer al microservicio de users
-      const results = await axios.get(`${config.usersUrl}/users/email/${email}`)
-        .then((res) => res.data
-        )
-        .catch((error) => {
-          console.error(error);
-        });
+      // const results = await axios.get(`${config.usersUrl}/users/email/${email}`)
+      //   .then((res) => res.data
+      //   )
+      //   .catch((error) => {
+      //     console.error(error);
+      //   });
 
       if (!results.success) {
         throw results.error;
