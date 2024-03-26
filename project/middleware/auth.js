@@ -8,18 +8,15 @@ function auth(req, res, next) {
     if (!token) {
       throw new Error("Authentication token not provided.");
     }
-
     const decoded = jwt.verify(token, config.jwtSecret);
     req.user = decoded.results;
     next();
   } catch (error) {
-    
     console.error(error);
-
     return res.status(403).json({
       error: true,
       msg: error.message,
-      message: "Insufficient permissions."
+      message: "Insufficient permissions.",
     });
   }
 }
