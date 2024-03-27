@@ -40,7 +40,7 @@ spec:
           #   - mountPath: "/data"
           #     name: "db-data"
         - name: users
-          image: users-micro
+          image: users-micro/v1.0
           imagePullPolicy: Never
           resources:
             requests:
