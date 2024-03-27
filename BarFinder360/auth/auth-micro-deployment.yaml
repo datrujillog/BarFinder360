@@ -39,7 +39,7 @@ spec:
             timeoutSeconds: 1
             periodSeconds: 15
             failureThreshold: 3
-          readinessProbe:    # ES PARA SABER SI EL CONTENEDOR ESTA LISTO PARA RECIBIR TRAFICO
+          readinessProbe: # ES PARA SABER SI EL CONTENEDOR ESTA LISTO PARA RECIBIR TRAFICO
             httpGet:
               path: /health
               port: 5002
@@ -47,11 +47,3 @@ spec:
             timeoutSeconds: 1
             periodSeconds: 2
             failureThreshold: 3
-
-      # volumenes:
-      #   - name: users
-      #     hostPath:
-      #       path: /data/microservisios/users
-      #       # type: DirectoryOrCreate
-      #   db-data:
-      #     emptyDir: {}
