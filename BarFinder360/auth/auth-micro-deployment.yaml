@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: auth
-          image: auth-micro/v1.0
+          image: auth-micro/v1.1
           imagePullPolicy: Never
           resources:
             requests:
