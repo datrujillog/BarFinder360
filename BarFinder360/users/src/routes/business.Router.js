@@ -31,6 +31,8 @@ function businessRouter(app) {
       ? res.status(201).json({ message: "Business users", user: response.results })
       : errorResponse(res, response.error);
   });
+
+  
 }
 
 export default businessRouter;
