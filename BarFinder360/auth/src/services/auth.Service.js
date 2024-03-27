@@ -22,10 +22,6 @@ class AuthService {
   async login(body) {
     try {
         const { email, password } = body;
-        // const results = await this.#userService.getByEmail(email);
-
-        //! configuracio de axios para hacer al microservicio de users
-
         const {data} = await axios.post("http://localhost:5001/api/users/ByEmail", body)
         .then((res) => res)
         .catch((error) => error);
