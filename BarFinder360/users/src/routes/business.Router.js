@@ -22,7 +22,7 @@ function businessRouter(app) {
       : errorResponse(res, response.error);
   });
 
-
+//TODO: CUADO SE LISTE LOS USUARIOS DE UN NEGOCIO SE DEBE MOSTRAR LOS DATOS DEL NEGOCIO
   router.get("/userBusiness/:id", async (req, res, next) => {
     // const body = req.body;
     const businessId = req.params.id;
