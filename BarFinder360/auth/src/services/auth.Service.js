@@ -44,8 +44,8 @@ class AuthService {
         data.password = await this.#encrypt(data.password);
       }
       const user = await axios.post("http://localhost:5001/api/users/business/create", data);
-      delete user.data.user.password
       const token = await this.crearToken(user.data.user);
+      delete user.data.user.password
       return {
         success: true,
         data: user.data.user,
