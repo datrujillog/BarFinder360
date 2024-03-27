@@ -14,7 +14,7 @@ function authRouter(app) {
 
   app.use("/api/auth", router);
 
-  // ! falta que el negocio tambien pueda iniciar secion ya que solamene puede iniciar seccion los usuarios 
+  // ! falta que el negocio tambien pueda iniciar secion ya que solamene puede iniciar seccion los usuarios  y no el negocio
   router.post("/login", async (req, res, next) => {
     const body = req.body;
     const response = await authServ.login(body);
