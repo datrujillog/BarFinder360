@@ -58,7 +58,7 @@ class BusinessService {
     }
   }
 
-
+//TODO: CUADO SE LISTE LOS USUARIOS DE UN NEGOCIO SE DEBE MOSTRAR LOS DATOS DEL NEGOCIO
   async userBusiness(businessId) {
     try {
       const results = await this.#client.user.findMany({
