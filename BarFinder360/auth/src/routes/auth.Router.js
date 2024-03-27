@@ -18,7 +18,7 @@ function authRouter(app) {
     const body = req.body;
     const response = await authServ.login(body);
     response.success
-      ? res.cookie("token", response.token, {
+      ? res.cookie("token", response.token, { 
         httpOnly: true,
         expires: new Date(Date.now() + 1000 * 60 * 60 * 24), // 1 day
         secure: false,
