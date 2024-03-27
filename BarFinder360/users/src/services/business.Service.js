@@ -65,6 +65,10 @@ class BusinessService {
         where: {
           BusinessId: parseInt(businessId),
         },
+        include: {
+          Business: true,
+          Role: true,
+        },
       });
       return { success: true, results };
     } catch (error) {
