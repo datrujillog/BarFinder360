@@ -25,7 +25,7 @@ class AuthService {
       // const results = await this.#userService.getByEmail(email);
 
       //! configuracio de axios para hacer al microservicio de users
-     //hacer una peticion axios get para enviar el email y password a la ruta de login
+      //hacer una peticion axios get para enviar el email y password a la ruta de login
       // const results = await axios.get(`http://localhost:5001/users/login/${email}/${password}`);
       // console.log(results.data);
 
@@ -46,9 +46,13 @@ class AuthService {
       if (data.password) {
         data.password = await this.#encrypt(data.password);
       }
-      const user = await axios.post("http://localhost:5001/users/business/create", data);      
-      const token = await this.crearToken(user);
-      return { success: true, user, token };
+      const user = await axios.post("http://localhost:5001/api/users/business/create", data);
+      const token = await this.crearToken(user.data.user);
+      return {
+          success: true,
+          data: user.data.user,
+          token
+      };
     } catch (error) {
       return { success: false, error };
     }
