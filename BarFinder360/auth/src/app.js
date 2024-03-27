@@ -19,9 +19,9 @@ app.use(express.urlencoded({ extended: true }));
 Auth(app);
 
 
-app.get("/", (req, res) => {
-    res.json({ message: "Welcome to BarFinder360" });
-  }),
+app.get("/health", (req, res) => {
+    res.send("ok")
+});
 
 //middleware de errores
 app.use((error, req, res, next) => {
