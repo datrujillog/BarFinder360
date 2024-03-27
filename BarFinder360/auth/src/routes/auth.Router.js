@@ -43,7 +43,7 @@ function authRouter(app) {
         secure: false,
       }) &&
       authResponse(res, 201, true, "signup successful", {
-        payload: response.user.data.user,
+        payload: response.data,
         token: response.token,
       })
       : errorResponse(res, response.error);
