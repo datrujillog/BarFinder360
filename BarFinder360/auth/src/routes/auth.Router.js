@@ -17,7 +17,6 @@ function authRouter(app) {
   router.post("/login", async (req, res, next) => {
     const body = req.body;
     const response = await authServ.login(body);
-
     response.success
       ? res.cookie("token", response.token, {
         httpOnly: true,
