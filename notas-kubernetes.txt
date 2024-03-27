@@ -29,8 +29,10 @@
          # minikube docker-env
          #  RUN eL comando que te da el minikube docker-env
 
-# 2  = # crear la imagen de docker
+## 2  = # crear la imagen de docker
          # docker build . -t users-micro
+           ##  con version
+         # docker build . -t users-micro/v1.0 
 
 # 3  = # aplicar el archivo de configuracion de kubernetes
             # kubectl apply -f users-micro-pod.yaml
