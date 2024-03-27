@@ -30,9 +30,9 @@ class AuthService {
         if (data === undefined) throw new Error("Error usuario no encontrado");
               
         await this.#compare(password, data.user.password);
-        const token = await this.crearToken(data.user);
+        const token = await this.crearToken({ email: data.user.email, id: data.user.id , role: data.user.RoleId, BusinessId: data.user.BusinessId});
         const { user } = data;
-        return { success: true, user, token };
+        return { success: true,  token };
     } catch (error) {
       return { success: false, error };
     }
@@ -58,10 +58,11 @@ class AuthService {
   validate(token) {
     try {
       const data = jwt.verify(token, config.jwtSecret);
+      delete data.iat;
       return {
         logged: true,
         success: true,
-        data: data.results
+        data: data
       };
 
     } catch ({ message }) {
