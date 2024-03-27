@@ -1,10 +1,10 @@
 import express, { response } from "express";
+
 import AuthService from "../services/auth.Service.js";
+
 import { errorResponse, authResponse,Responsee} from "../helpers/response.js";
-// import { asyncHandler } from "../helpers/utils.js";
 import { valitorUserSignup } from "../middleware/express-validator.js";
-// import auth from "../middleware/auth.js";
-// import { checkPermission } from "../middleware/checkPermission.js";
+
 
 function authRouter(app) {
   const router = express.Router();
@@ -15,7 +15,6 @@ function authRouter(app) {
   app.use("/api/auth", router);
 
   // ! falta que el negocio tambien pueda iniciar secion ya que solamene puede iniciar seccion los usuarios 
-
   router.post("/login", async (req, res, next) => {
     const body = req.body;
     const response = await authServ.login(body);
@@ -30,7 +29,6 @@ function authRouter(app) {
         token: response.token,
       })
       : errorResponse(res, response.error);
-
   });
 
   router.post("/signup",async (req, res, next) => {
