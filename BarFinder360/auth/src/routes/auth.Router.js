@@ -53,7 +53,7 @@ function authRouter(app) {
   router.post("/validate", (req, res, next) => {
     // const token = req.cookies.token;
     const { token } = req.body;
-    const response = authServi.validate(token);
+    const response = authServ.validate(token);
 
     response.success
       ? authResponse(res, 201, true, "token is valid",{
