@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth
+  labels:
+    micro: auth
+spec:
+  selector:
+    matchLabels:
+      micro: auth
+  replicas: 2
+  template:
+    # Definicion del PD
+    metadata:
+      name: auth
+      labels:
+        micro: auth
+    spec:
+      containers:
+        - name: auth
+          image: users-micro/v1.0
+          imagePullPolicy: Never
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "128Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1024Mi"
+          ports:
+            - containerPort: 5002
+              name: http
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 5002
+            initialDelaySeconds: 25
+            timeoutSeconds: 1
+            periodSeconds: 15
+            failureThreshold: 3
+          readinessProbe:    # ES PARA SABER SI EL CONTENEDOR ESTA LISTO PARA RECIBIR TRAFICO
+            httpGet:
+              path: /health
+              port: 5002
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
+            periodSeconds: 2
+            failureThreshold: 3
+
+      # volumenes:
+      #   - name: users
+      #     hostPath:
+      #       path: /data/microservisios/users
+      #       # type: DirectoryOrCreate
+      #   db-data:
+      #     emptyDir: {}
