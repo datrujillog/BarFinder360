@@ -19,23 +19,23 @@ class AuthService {
     // this.#client = new PrismaClient();
   }
 
-  async login(data) {
+  async login(body) {
     try {
-      const { email, password } = data;
-      // const results = await this.#userService.getByEmail(email);
+        const { email, password } = body;
+        // const results = await this.#userService.getByEmail(email);
 
-      //! configuracio de axios para hacer al microservicio de users
-      //hacer una peticion axios get para enviar el email y password a la ruta de login
-      const results = await axios.post("http://localhost:5001/api/users/business/create", data);
+        //! configuracio de axios para hacer al microservicio de users
 
-      console.log(results)
-      // if (!results.success) {
-      //   throw results.error;
-      // }
-      await this.#compare(password, results.results.password);
-      const token = await this.crearToken(results);
-      const user = results.results;
-      return { success: true, user, token };
+        const {data} = await axios.post("http://localhost:5001/api/users/ByEmail", body)
+        .then((res) => res)
+        .catch((error) => error);
+        
+        if (data === undefined) throw new Error("Error usuario no encontrado");
+              
+        await this.#compare(password, data.user.password);
+        const token = await this.crearToken(data.user);
+        const { user } = data;
+        return { success: true, user, token };
     } catch (error) {
       return { success: false, error };
     }
@@ -49,9 +49,9 @@ class AuthService {
       const user = await axios.post("http://localhost:5001/api/users/business/create", data);
       const token = await this.crearToken(user.data.user);
       return {
-          success: true,
-          data: user.data.user,
-          token
+        success: true,
+        data: user.data.user,
+        token
       };
     } catch (error) {
       return { success: false, error };
