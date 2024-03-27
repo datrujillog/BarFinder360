@@ -61,13 +61,15 @@ function userRouter(app) {
   });
 
   //! En desarrollo 
-  router.get("/ByEmail", async (req, res, next) => {
-    const email = req.query.email;
-    const response = await businessServ.getByEmail(email);
+  router.post("/ByEmail", async (req, res, next) => {
+    const body = req.body;
+    const response = await userServ.getByEmail(body.email);
     response.success
-      ? res.status(200).json({ message: "Business found", business: response.results })
-      : errorResponse(res, response.error);
+      ? res.status(200).json({ success: true, message: "Business found", user: response.results })
+      : res.status(404).json({ success: false, message: "Business not found", error: response.error });
   });
 }
 
 export default userRouter;
+// : errorResponse(res, response.error);
+// res.status(404).json({success: false, message: "Business not found", error: response.error});
