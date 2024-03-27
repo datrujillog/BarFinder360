@@ -95,10 +95,6 @@ class UserService {
 
   async getByEmail(email) {
     try {
-
-      
-
-
       const results = await this.#client.user.findFirst({
         //busca el primer usuario que cumpla con la condicion de email
         where: {
