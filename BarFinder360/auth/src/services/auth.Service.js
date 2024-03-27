@@ -9,9 +9,6 @@ import config from "../configs/config.js";
 
 
 
-
-
-
 class AuthService {
   // #client;
   constructor() {
@@ -23,7 +20,7 @@ class AuthService {
   async login(body) {
     try {
         const { email, password } = body;
-        const {data} = await axios.post("http://localhost:5001/api/users/ByEmail", body)
+        const {data} = await axios.post(`${config.urlByEmail}`, body)
         .then((res) => res)
         .catch((error) => error);
         
@@ -43,7 +40,7 @@ class AuthService {
       if (data.password) {
         data.password = await this.#encrypt(data.password);
       }
-      const user = await axios.post("http://localhost:5001/api/users/business/create", data);
+      const user = await axios.post(`${config.urlSignup}`, data);
       const token = await this.crearToken(user.data.user);
       delete user.data.user.password
       return {
