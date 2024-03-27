@@ -18,7 +18,8 @@ class AuthService {
     // this.#prisma = client;
     // this.#client = new PrismaClient();
   }
-
+//!  la funcion de login para que pueda iniciar secion tanto el negocio como el usuario
+//! cambia la funcion  de la promesas a async y await ya que es redudante 
   async login(body) {
     try {
         const { email, password } = body;
