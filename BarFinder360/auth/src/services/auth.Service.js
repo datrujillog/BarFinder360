@@ -26,9 +26,9 @@ class AuthService {
 
       //! configuracio de axios para hacer al microservicio de users
       //hacer una peticion axios get para enviar el email y password a la ruta de login
-      // const results = await axios.get(`http://localhost:5001/users/login/${email}/${password}`);
-      // console.log(results.data);
+      const results = await axios.post("http://localhost:5001/api/users/business/create", data);
 
+      console.log(results)
       // if (!results.success) {
       //   throw results.error;
       // }
