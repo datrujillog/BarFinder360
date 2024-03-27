@@ -18,8 +18,8 @@ function userRouter(app) {
     const response = await userServ.createUser(body);
     response.success
       ? res
-          .status(201)
-          .json({ message: "User created", user: response.results })
+        .status(201)
+        .json({ message: "User created", user: response.results })
       : errorResponse(res, response.error);
   });
 
@@ -47,8 +47,8 @@ function userRouter(app) {
     const response = await userServ.updateUser(userId, body);
     response.success
       ? res
-          .status(201)
-          .json({ message: "User updated", user: response.results })
+        .status(201)
+        .json({ message: "User updated", user: response.results })
       : errorResponse(res, response.error);
   });
 
@@ -59,6 +59,17 @@ function userRouter(app) {
       ? res.status(200).json({ message: response.message })
       : errorResponse(res, response.error);
   });
+
+  //! En desarrollo 
+  router.post("/ByEmail", async (req, res, next) => {
+    const body = req.body;
+    const response = await userServ.getByEmail(body.email);
+    response.success
+      ? res.status(200).json({ success: true, message: "Business found", user: response.results })
+      : res.status(404).json({ success: false, message: "Business not found", error: response.error });
+  });
 }
 
 export default userRouter;
+// : errorResponse(res, response.error);
+// res.status(404).json({success: false, message: "Business not found", error: response.error});

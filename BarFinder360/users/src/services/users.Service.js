@@ -6,6 +6,8 @@ import RoleService from "./rol.Service.js";
 
 import config from "../configs/config.js";
 import isUserAdmin from "../helpers/isUserAdmin.js";
+import { encryptPassword,comparePassword } from "../helpers/bcrypt.js";
+
 
 isUserAdmin;
 class UserService {
@@ -30,6 +32,10 @@ class UserService {
 
       const businessGet = await this.#businessServ.getBusinessById(BusinessId);
       if (!businessGet.success) throw new Error("Business not found");
+
+      if(body.password){
+        body.password = await encryptPassword(body.password);
+      }
 
       //! para crear al usuario se necesita el id del negocio al que pertenece el id de negocio se obtiene de la request
       const results = await this.#client.user.create({

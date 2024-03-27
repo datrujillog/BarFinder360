@@ -29,8 +29,10 @@
          # minikube docker-env
          #  RUN eL comando que te da el minikube docker-env
 
-# 2  = # crear la imagen de docker
+## 2  = # crear la imagen de docker
          # docker build . -t users-micro
+           ##  con version
+         # docker build . -t users-micro/v1.0 
 
 # 3  = # aplicar el archivo de configuracion de kubernetes
             # kubectl apply -f users-micro-pod.yaml
@@ -69,6 +71,7 @@
 
     # este comando es para hacer un port-forward a un pod especifico y un labes especifico
     # kubectl port-forward pods -l app=users 5001:5001
+    # kubectl port-forward pods/users-7fbf6cf55b-dwcwm 5001:5001
     # kubectl port-forward $(kubectl get pods -l v1=v2 -o jsonpath='{.items[0].metadata.name}') 5001:5001      # este comando es para hacer un port-forward a un pod especifico y un labes especifico
 
 

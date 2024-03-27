@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import axios from "axios";
 import RoleService from "./rol.Service.js";
 import randomCode from "../helpers/randomCode.js";
 
@@ -10,6 +11,8 @@ class BusinessService {
     this.#roleServ = new RoleService();
   }
 
+
+  // ! se crea desde el micdroservisi de auth con signup
   async createBusiness(body) {
     try {
       const role = await this.#roleServ.createRole({ name: "ADMIN" });
@@ -54,6 +57,26 @@ class BusinessService {
       return { success: false, error };
     }
   }
+
+
+  async userBusiness(businessId) {
+    try {
+      const results = await this.#client.user.findMany({
+        where: {
+          BusinessId: parseInt(businessId),
+        },
+        include: {
+          Business: true,
+          Role: true,
+        },
+      });
+      return { success: true, results };
+    } catch (error) {
+      return { success: false, error };
+    }
+  }
+
+
 }
 
 export default BusinessService;
