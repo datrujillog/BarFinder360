@@ -59,12 +59,14 @@ class AuthService {
     try {
       const data = jwt.verify(token, config.jwtSecret);
       return {
+        logged: true,
         success: true,
         data: data.results
       };
 
     } catch ({ message }) {
       return {
+        logged: false,
         success: false,
         message
       }
