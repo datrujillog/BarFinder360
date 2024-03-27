@@ -18,8 +18,8 @@ function userRouter(app) {
     const response = await userServ.createUser(body);
     response.success
       ? res
-          .status(201)
-          .json({ message: "User created", user: response.results })
+        .status(201)
+        .json({ message: "User created", user: response.results })
       : errorResponse(res, response.error);
   });
 
@@ -47,8 +47,8 @@ function userRouter(app) {
     const response = await userServ.updateUser(userId, body);
     response.success
       ? res
-          .status(201)
-          .json({ message: "User updated", user: response.results })
+        .status(201)
+        .json({ message: "User updated", user: response.results })
       : errorResponse(res, response.error);
   });
 
@@ -57,6 +57,15 @@ function userRouter(app) {
     const response = await userServ.deleteUser(userId);
     response.success
       ? res.status(200).json({ message: response.message })
+      : errorResponse(res, response.error);
+  });
+
+  //! En desarrollo 
+  router.get("/ByEmail", async (req, res, next) => {
+    const email = req.query.email;
+    const response = await businessServ.getByEmail(email);
+    response.success
+      ? res.status(200).json({ message: "Business found", business: response.results })
       : errorResponse(res, response.error);
   });
 }
